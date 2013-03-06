@@ -1,0 +1,13 @@
+		<html>
+		    <head>
+		      <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /	>
+		    </head>
+            <body>
+			<h1>Hello {{ name }}</h1>
+			<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
+              <form action="/profile" method="post">
+				<div style="position: absolute; right: 100;">
+                <p><button name="Profile" type="submit" value="Profile">Profile</button></p>
+              </form>
+            </body>
+          </html>
