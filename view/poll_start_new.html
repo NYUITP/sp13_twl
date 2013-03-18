@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Extension Options</title>
+<script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+	var channel = new goog.appengine.Channel('{{ channel_key }}');
+    var socket = channel.open();
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+    socket.onerror = onError;
+    socket.onclose = onClose;
+	
+	function onOpened() {
+	console.log('onError');
+    }
+    function onMessage(msg_obj) {
+		//document.write ("Printing the channel message data"); // prints the value of the message variable-->
+		//document.write (msg_obj.data);-->
+		poll_count = Number(document.getElementById('userInput1').innerHTML) + 1 ; 
+		document.getElementById('userInput1').innerHTML = poll_count
+
+    }
+    function onError(obj) {
+        console.log('onError');
+    }
+    function onClose(obj) {
+        console.log('onClose');
+    }
+</script>
+<label id="userInput1">0</label>
+</body>
+</html>
