@@ -4,6 +4,7 @@ import webapp2
 import jinja2
 import os
 import twilio.twiml
+from google.appengine.api import channel
 from model.Twilio_Info import *
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -40,7 +41,7 @@ class Twilio_Save(webapp2.RequestHandler):
 		twilio_info1.twilio_username = cgi.escape(self.request.get('username'))
 		twilio_info1.twilio_password = cgi.escape(self.request.get('password'))
 		twilio_info1.put()
-		self.redirect("/generate_number")
+		self.redirect("/poll_sms_handler")
 		
 class Poll_Save(webapp2.RequestHandler):
 
@@ -78,9 +79,10 @@ class Generate_Number(webapp2.RequestHandler):
 			number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply")
 			self.response.out.write(number.sms_url)
 			print number.sms_url
-		self.redirect("/auto_reply")
+		#self.redirect("/auto_reply")
 		
 class Auto_Reply_Sms(webapp2.RequestHandler):
+	sender_number = 0
 	# def get(self):
 		# message = "Thank you for participating in the poll. Your vote has been recorded"
 		# resp = twilio.twiml.Response()
@@ -93,13 +95,30 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 	def post(self):
 		message = "Thank you for participating in the poll. Your vote has been recorded"
 		resp = twilio.twiml.Response()
-		#print "hi-after resp"
+		#print "hi"
+		#print "%s" %(self.request.get('Body'))
 		resp.sms(message)
 		message1= str(resp)
-		#webapp2.Response(message1) 
+		#webapp2.Response(message1)
+		sender_number = self.request.get('From')	
+		channel.send_message('1234', "%s" % (self.request.get('Body')))
 		self.response.write(message1)
+		#self.redirect("/poll_sms_handler")
+		#self.response.out.write(message1)
+		#self.response.out.write(self.request.get('Body'))
+		
+class Poll_Sms_Handler(webapp2.RequestHandler):
+	def get(self):
+		#client_id = os.urandom(16).encode('hex')
+		channel_key = channel.create_channel('1234')
+		template_values = {
+			'client_id': users.get_current_user().nickname(),
+			'channel_key': channel_key,
+			}
+		template = jinja_environment.get_template('poll_start_new.html')
+		self.response.out.write(template.render(template_values))
 		
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms)
+    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/poll_sms_handler', Poll_Sms_Handler)
 ], debug=True)
  
