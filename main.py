@@ -41,7 +41,8 @@ class Twilio_Save(webapp2.RequestHandler):
 		twilio_info1.twilio_username = cgi.escape(self.request.get('username'))
 		twilio_info1.twilio_password = cgi.escape(self.request.get('password'))
 		twilio_info1.put()
-		self.redirect("/poll_sms_handler")
+		#self.redirect("/poll_sms_handler")
+		self.redirect("/generate_number")
 		
 class Poll_Save(webapp2.RequestHandler):
 
@@ -57,6 +58,20 @@ class Poll_Save(webapp2.RequestHandler):
 		self.response.out.write(id)
 		self.redirect("/generate_number")
 		
+class Choose_Number(webapp2.RequestHandler):
+	def post(self):
+		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
+		client = TwilioRestClient(q.twilio_username, q.twilio_password)
+		numbers = client.phone_numbers.list()
+		template_values = {
+			'numbers' : numbers,
+            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
+			
+		}
+		template = jinja_environment.get_template('choose_number.html')
+		self.response.out.write(template.render(template_values))
+		
+		
 class Generate_Number(webapp2.RequestHandler):
 	def get(self):
 		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
@@ -67,19 +82,19 @@ class Generate_Number(webapp2.RequestHandler):
 		if numbers:
 			#print numbers[0].phone_number
 			#self.response.out.write("hi")
-			self.response.out.write("""<br>""")
-			self.response.out.write("%s" %(numbers[0].phone_number))
+			#self.response.out.write("""<br>""")
+			#self.response.out.write("%s" %(numbers[0].phone_number))
 			#self.response.out.write("""<br>""")
 			#self.response.out.write(numbers[0].phone_number)
-			#numbers[0].purchase()
+			numbers[0].purchase()
 			#self.response.out.write(numbers[0])
 			#generated_number = numbers[0]
-		numbers = client.phone_numbers.list(phone_number="+14242773010")
+		numbers = client.phone_numbers.list(phone_number="%s" %(numbers[0].phone_number))
 		if numbers:
 			number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply")
-			self.response.out.write(number.sms_url)
-			print number.sms_url
-		#self.redirect("/auto_reply")
+			#self.response.out.write(number.sms_url)
+			#print number.sms_url
+		self.redirect("/poll_sms_handler?number=" + "%s" %(numbers[0].phone_number))
 		
 class Auto_Reply_Sms(webapp2.RequestHandler):
 	sender_number = 0
@@ -108,10 +123,12 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 		#self.response.out.write(self.request.get('Body'))
 		
 class Poll_Sms_Handler(webapp2.RequestHandler):
-	def get(self):
+	def post(self):
+		#phone = self.request.get('number')
 		#client_id = os.urandom(16).encode('hex')
 		channel_key = channel.create_channel('1234')
 		template_values = {
+			'phone_number': self.request.get('number'),
 			'client_id': users.get_current_user().nickname(),
 			'channel_key': channel_key,
 			}
@@ -119,6 +136,6 @@ class Poll_Sms_Handler(webapp2.RequestHandler):
 		self.response.out.write(template.render(template_values))
 		
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/poll_sms_handler', Poll_Sms_Handler)
+    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/poll_sms_handler', Poll_Sms_Handler), ('/choose_number', Choose_Number)
 ], debug=True)
  

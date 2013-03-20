@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	      <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	    </head>
+		  <body>	
+		</form>
+		<form action="/poll_sms_handler" method="post">
+		{% for number in  numbers  %}
+		<input type="radio" name="number" value="{{ number.phone_number }}" /> {{ number.phone_number }}<br />
+		  {% endfor %}
+		  <input type="submit" value="Submit">
+              </form>
+		  </body>
+		  </html>
