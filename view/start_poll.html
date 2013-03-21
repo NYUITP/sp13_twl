@@ -1,19 +1,49 @@
 <html>
+	
     <head>
       <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /	>
       <script type="text/javascript">
 	var counter = 0
+	var min = 0
+	var hours = 0
 	var timer;
+	var time;
 	function countUP () {
 	 counter = counter + 1;//increment the counter by 1
-	 //display the new value in the div
-	 document.getElementById("timer_container").innerHTML = counter;
+	 if(counter > 59)
+	 {
+		min = min + 1;
+		counter = 0;
 	 }
+	 if(min > 59)
+	 {
+		hours = hours + 1;
+		min = 0;
+	 }
+	 //display the new value in the div
+	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
+	 //document.getElementById("timer_container").innerHTML = counter;
+	}
 	
+	var obj = '{{ data_store }}';
+	var obj1 = eval ("(" + obj + ")");
+	var i = 1;
+	
+	
+function print_dict()
+{			var div = document.getElementById("output");
+	
+	
+	for(var key in obj1){
+		div.innerHTML += 'Option' + i + ' ' + key + ' ' + obj1[key] + "<br>";
+		i++;	
+	}	
+}
 	</script>
 
     </head>
-    <body onload='timer=setInterval("countUP()", 1000 );'>
+	
+    <body onload='timer=setInterval("countUP()", 1000 );print_dict();'>
 	
 	
 		<h1>{{ name }}</h1>
@@ -24,50 +54,17 @@
 		 your question:<BR>
 		<TEXTAREA NAME="question" COLS=40 ROWS=6>{{ question }}</TEXTAREA><BR><BR>			
 		 Your Options: <BR>			
-		<input type="text" name="options">	
+		</FORM>
+
+		<div id="output">
+
+				
+		</div>
 		
-	
-	    <script type="text/javascript">
-
-		    var myStringArray = ["Hello","World"];
-			for (var i = 0; i < myStringArray.length; i++) {
-				document.write(myStringArray[i]);
-				document.write('\n');
-			}
-	      
-			dictionary = {'1': 'one', '2': 'two', '3': 'there'}
-			
-			/*$.each('{{ data_store }}', function(key, value) {
-			  console.log(key+ ':' + value);
-			}*/
-			
-			//for (var k in '{{ data_store }}') {
-				for (var p in '{{ data_store }}')  {
-				  console.log(p);
-				}
-
-			/*for (var k in '{{ data_store }}') {
-				document.write(k.key());
-	
-			  // do something with key
-			}
-
-
-		 var js_dict = [
-		          {% for k, v in data_store.iteritems %}
-		              ["{{ k }}","{{ v }}"] {% if not forloop.last %},{% endif %}
-		          {% endfor %}
-		      ];
-
-				for (var k in js_dict) {
-					document.write(k);
-				  // do something with key
-				}*/
-    	</script>
-	    </FORM>
      	<Form Action="/Stop_Poll" METHOD=POST>
 		<p><button name="Stop Poll" type="submit">Stop Poll</button></p> 
 		</Form>       		
 		
     </body>
+		
 </html>
