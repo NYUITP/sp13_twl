@@ -25,19 +25,25 @@
 	 //document.getElementById("timer_container").innerHTML = counter;
 	}
 	
-	var obj = '{{ data_store }}';
-	var obj1 = eval ("(" + obj + ")");
+	var obj_data = '{{ data_store }}';
+	var obj_options = '{{ option_data }}';
+	var options = eval ("(" + obj_options + ")");
+	var data = eval ("(" + obj_data + ")");
 	var i = 1;
 	
 	
 function print_dict()
 {			var div = document.getElementById("output");
 	
-	
-	for(var key in obj1){
-		div.innerHTML += 'Option' + i + ' ' + key + ' ' + obj1[key] + "<br>";
+	for(var key in options)
+	{
+		div.innerHTML += 'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>"
+		i++;
+	}
+	/*for(var key in data){
+		div.innerHTML += 'Option' + i + ' ' + key + ' ' + data[key] + "<br>";
 		i++;	
-	}	
+	}*/	
 }
 	</script>
 

@@ -14,8 +14,8 @@ from google.appengine.ext import db
 
 #Global
 data = dict()
-
-
+option_data = dict()
+number = 1
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'view')))
@@ -52,7 +52,10 @@ class Twilio_Save(webapp2.RequestHandler):
 class Twilio_Poll(webapp2.RequestHandler):
 #Initital Call to Poll Page	
 	def post(self):
+		global number
 		data.clear()
+		number = 1
+		option_data.clear()
 		template_values = {
             'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
             'question': self.request.get('question')
@@ -75,13 +78,14 @@ class Twilio_Poll(webapp2.RequestHandler):
 class Option_Save(webapp2.RequestHandler):	
 
 	def post(self):
+		global number
 		question = self.request.get('question')
 		options = self.request.get('options')
 		data[options] = 0
+		option_data[number] = options
+		number = number + 1
 		#self.response.out.write(data.keys())
 		self.redirect('/poll?' + urllib.urlencode({'question': question}))
-
-	
 
 class Start_Poll(webapp2.RequestHandler):	
 			def post(self):	
@@ -89,8 +93,8 @@ class Start_Poll(webapp2.RequestHandler):
  				template_values = {
 		            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
 		            'question': self.request.get('question'),
-	            	'data_store': json.dumps(data)
-					
+	            	'data_store': json.dumps(data),
+					'option_data': json.dumps(option_data)
 				}
 
 				template = jinja_environment.get_template('start_poll.html')
