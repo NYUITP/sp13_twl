@@ -195,7 +195,19 @@ class Start_Poll(webapp2.RequestHandler):
 		template = jinja_environment.get_template('start_poll.html')
 		self.response.out.write(template.render(template_values))
 
+class Stop_Poll(webapp2.RequestHandler):		
+	def post(self):
+		#question = self.request.get('poll_question')
+		#poll_data = self.request.get('polldata')
+		self.response.out.write(self.request.get('poll_question'))
+		self.response.out.write(self.request.get('polldata'))
+		poll_info = Poll_Data()
+		poll_info.poll_question = cgi.escape(str(self.request.get('poll_question')))
+		poll_info.poll_data = cgi.escape(str(self.request.get('polldata')))
+		poll_info.put()
+		self.response.out.write("The data is saved")
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/choose_number', Choose_Number), ('/poll_number', Poll_Number), ('/poll', Twilio_Poll), ('/option_save', Option_Save), ('/Start_Poll', Start_Poll), ('/add_sms_url', Add_Sms_URL)
+    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/choose_number', Choose_Number), ('/poll_number', Poll_Number), ('/poll', Twilio_Poll), ('/option_save', Option_Save), ('/Start_Poll', Start_Poll), ('/add_sms_url', Add_Sms_URL), ('/stop_poll', Stop_Poll)
 ], debug=True)
  
