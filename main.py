@@ -1,30 +1,20 @@
-
-
 import cgi
 import urllib
 import webapp2
 import jinja2
 import os
-<<<<<<< HEAD
 import json
-
-
-from model.Twilio_Info import *
-from google.appengine.api import users
-from google.appengine.ext import db
-
-#Global
-data = dict()
-option_data = dict()
-number = 1
-=======
 import twilio.twiml
 from google.appengine.api import channel
 from model.Twilio_Info import *
 from google.appengine.api import users
 from google.appengine.ext import db
 from twilio.rest import TwilioRestClient
->>>>>>> origin/Suyash
+
+#Global
+data = dict()
+option_data = dict()
+data_number = 1
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'view')))
@@ -49,6 +39,13 @@ class Profile(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('profile.html')
 		self.response.out.write(template.render(template_values))
+		
+class Poll_Number(webapp2.RequestHandler):
+    def post(self):
+		template_values = {
+		}
+		template = jinja_environment.get_template('poll_number.html')
+		self.response.out.write(template.render(template_values))		
 		  
 class Twilio_Save(webapp2.RequestHandler):
 	def post(self):
@@ -57,68 +54,10 @@ class Twilio_Save(webapp2.RequestHandler):
 		twilio_info1.twilio_username = cgi.escape(self.request.get('username'))
 		twilio_info1.twilio_password = cgi.escape(self.request.get('password'))
 		twilio_info1.put()
-<<<<<<< HEAD
-		
-class Twilio_Poll(webapp2.RequestHandler):
-#Initital Call to Poll Page	
-	def post(self):
-		global number
-		data.clear()
-		number = 1
-		option_data.clear()
-		template_values = {
-            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
-            'question': self.request.get('question')
-
-		}
-		template = jinja_environment.get_template('poll.html')
-		self.response.out.write(template.render(template_values))
-
-#Subsequent calls after the initial call to poll page
-	def get(self):
-		template_values = {
-            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
-            'question': self.request.get('question'),
-			'data_store': json.dumps(data)
- 		}
-		template = jinja_environment.get_template('poll.html')
-		self.response.out.write(template.render(template_values))	
-		
-		
-class Option_Save(webapp2.RequestHandler):	
-
-	def post(self):
-		global number
-		question = self.request.get('question')
-		options = self.request.get('options')
-		data[options] = 0
-		option_data[number] = options
-		number = number + 1
-		#self.response.out.write(data.keys())
-		self.redirect('/poll?' + urllib.urlencode({'question': question}))
-
-class Start_Poll(webapp2.RequestHandler):	
-			def post(self):	
-				
- 				template_values = {
-		            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
-		            'question': self.request.get('question'),
-	            	'data_store': json.dumps(data),
-					'option_data': json.dumps(option_data)
-				}
-
-				template = jinja_environment.get_template('start_poll.html')
-				self.response.out.write(template.render(template_values))
-				
-							
-app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/poll',Twilio_Poll), ('/option_save',Option_Save), ('/Start_Poll',Start_Poll)
-=======
-		#self.redirect("/poll_sms_handler")
-		self.redirect("/generate_number")
+		self.redirect("/")
+		#self.redirect("/generate_number")
 		
 class Poll_Save(webapp2.RequestHandler):
-
 	def post(self):
 		#user_key = self.request.get('user_key_info')
 		poll_info = Poll_Data()
@@ -138,8 +77,7 @@ class Choose_Number(webapp2.RequestHandler):
 		numbers = client.phone_numbers.list()
 		template_values = {
 			'numbers' : numbers,
-            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
-			
+            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),	
 		}
 		template = jinja_environment.get_template('choose_number.html')
 		self.response.out.write(template.render(template_values))
@@ -167,7 +105,7 @@ class Generate_Number(webapp2.RequestHandler):
 			number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply")
 			#self.response.out.write(number.sms_url)
 			#print number.sms_url
-		self.redirect("/poll_sms_handler?number=" + "%s" %(numbers[0].phone_number))
+		self.redirect("/poll?number=" + "%s" %(numbers[0].phone_number))
 		
 class Auto_Reply_Sms(webapp2.RequestHandler):
 	sender_number = 0
@@ -195,21 +133,61 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 		#self.response.out.write(message1)
 		#self.response.out.write(self.request.get('Body'))
 		
-class Poll_Sms_Handler(webapp2.RequestHandler):
+class Twilio_Poll(webapp2.RequestHandler):
+#Initital Call to Poll Page	
 	def post(self):
-		#phone = self.request.get('number')
-		#client_id = os.urandom(16).encode('hex')
-		channel_key = channel.create_channel('1234')
+		global data_number
+		data.clear()
+		data_number = 1
+		option_data.clear()
 		template_values = {
+            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
+            'question': self.request.get('question'),
+			'number' : self.request.get('number')
+		}
+		template = jinja_environment.get_template('poll.html')
+		self.response.out.write(template.render(template_values))
+
+#Subsequent calls after the initial call to poll page
+	def get(self):
+		template_values = {
+            'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
+            'question': self.request.get('question'),
+			'data_store': json.dumps(data),
+			'number' : self.request.get('number')
+ 		}
+		template = jinja_environment.get_template('poll.html')
+		self.response.out.write(template.render(template_values))	
+		
+		
+class Option_Save(webapp2.RequestHandler):
+	def post(self):
+		global data_number
+		question = self.request.get('question')
+		options = self.request.get('options')
+		number = self.request.get('number')
+		data[options] = 0
+		option_data[data_number] = options
+		data_number = data_number + 1
+		#self.response.out.write(data.keys())
+		self.redirect('/poll?question=' + question + '&number=' + number)
+
+class Start_Poll(webapp2.RequestHandler):	
+	def post(self):			
+		channel_key = channel.create_channel('1234')
+ 		template_values = {
+		    'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
+	        'question': self.request.get('question'),
+			'data_store': json.dumps(data),
+			'option_data': json.dumps(option_data),
 			'phone_number': self.request.get('number'),
 			'client_id': users.get_current_user().nickname(),
 			'channel_key': channel_key,
-			}
-		template = jinja_environment.get_template('poll_start_new.html')
+		}
+		template = jinja_environment.get_template('start_poll.html')
 		self.response.out.write(template.render(template_values))
-		
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/poll_sms_handler', Poll_Sms_Handler), ('/choose_number', Choose_Number)
->>>>>>> origin/Suyash
+    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/choose_number', Choose_Number), ('/poll_number', Poll_Number), ('/poll', Twilio_Poll), ('/option_save', Option_Save), ('/Start_Poll', Start_Poll)
 ], debug=True)
  
