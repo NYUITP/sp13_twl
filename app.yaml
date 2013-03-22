@@ -1,30 +1,5 @@
-<<<<<<< HEAD
 application: sp13-twilio
-version: 5
-runtime: python27
-api_version: 1
-threadsafe: yes
-
-handlers:
-- url: /stylesheets
-  static_dir: stylesheets
-
-- url: .*
-  script: main.app
-
-libraries:
-- name: webapp2
-  version: "2.5.2"
-  
-- name: jinja2
-  version: latest
-
-
-
-
-=======
-application: sp13-twilio
-version: 30
+version: 46
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -48,4 +23,3 @@ inbound_services:
 
 
 
->>>>>>> origin/Suyash
