@@ -92,7 +92,7 @@ class Add_Sms_URL(webapp2.RequestHandler):
 			self.redirect("/poll?number=" + "%s" %(number.phone_number))
 		
 class Generate_Number(webapp2.RequestHandler):
-	def get(self):
+	def post(self):
 		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
 		client = TwilioRestClient(q.twilio_username, q.twilio_password)
 		numbers = client.phone_numbers.search(type="local")
