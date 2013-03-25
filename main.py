@@ -14,6 +14,7 @@ from twilio.rest import TwilioRestClient
 #Global
 data = dict()
 option_data = dict()
+incoming_poll_numbers = dict()
 data_number = 1
 
 jinja_environment = jinja2.Environment(
@@ -42,6 +43,9 @@ class Profile(webapp2.RequestHandler):
 		
 class Poll_Number(webapp2.RequestHandler):
     def post(self):
+		data.clear()
+		incoming_poll_numbers.clear()
+		option_data.clear()
 		template_values = {
 		}
 		template = jinja_environment.get_template('poll_number.html')
@@ -117,6 +121,7 @@ class Generate_Number(webapp2.RequestHandler):
 		
 class Auto_Reply_Sms(webapp2.RequestHandler):
 	sender_number = 0
+	option_number = 0
 	# def get(self):
 		# message = "Thank you for participating in the poll. Your vote has been recorded"
 		# resp = twilio.twiml.Response()
@@ -127,15 +132,25 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 		# self.response.write(message1)
 		
 	def post(self):
-		message = "Thank you for participating in the poll. Your vote has been recorded"
+		
 		resp = twilio.twiml.Response()
 		#print "hi"
 		#print "%s" %(self.request.get('Body'))
+		option_number = int(self.request.get('Body'))
+		if(incoming_poll_numbers.has_key("%s" %(self.request.get('From')))):
+			message = "Your vote has already been recorded."
+		if(len(data) < option_number):
+			message = "You have input an invalid option. Please vote again."
+		if((not(incoming_poll_numbers.has_key("%s" %(self.request.get('From'))))) and  (len(data) >= option_number)):
+			incoming_poll_numbers["%s" %(self.request.get('From'))] = "%s" % (self.request.get('Body'))	
+			channel.send_message('1234', "%s" % (self.request.get('Body')))
+			message = "Thank you for participating in the poll. Your vote has been recorded"
 		resp.sms(message)
 		message1= str(resp)
+		#resp.sms(message1)
 		#webapp2.Response(message1)
 		sender_number = self.request.get('From')	
-		channel.send_message('1234', "%s" % (self.request.get('Body')))
+		#channel.send_message('1234', "%s" % (self.request.get('Body')))
 		self.response.write(message1)
 		#self.redirect("/poll_sms_handler")
 		#self.response.out.write(message1)
@@ -144,9 +159,10 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 class Twilio_Poll(webapp2.RequestHandler):
 #Initital Call to Poll Page	
 	def post(self):
-		global data_number
+		#global data_number
 		data.clear()
-		data_number = 1
+		incoming_poll_numbers.clear()
+		#data_number = 1
 		option_data.clear()
 		template_values = {
             'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
