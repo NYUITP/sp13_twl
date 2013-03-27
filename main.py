@@ -137,11 +137,13 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 		#print "hi"
 		#print "%s" %(self.request.get('Body'))
 		option_number = int(self.request.get('Body'))
-		if(incoming_poll_numbers.has_key("%s" %(self.request.get('From')))):
+		if(len(data) < 1):
+			message = "The poll has not yet started."
+		if((incoming_poll_numbers.has_key("%s" %(self.request.get('From')))) and (len(data) > 0)):
 			message = "Your vote has already been recorded."
-		if(len(data) < option_number):
+		if((not(incoming_poll_numbers.has_key("%s" %(self.request.get('From'))))) and (len(data) < option_number) and (len(data) > 0)):
 			message = "You have input an invalid option. Please vote again."
-		if((not(incoming_poll_numbers.has_key("%s" %(self.request.get('From'))))) and  (len(data) >= option_number)):
+		if((not(incoming_poll_numbers.has_key("%s" %(self.request.get('From'))))) and (len(data) >= option_number) and (len(data) > 0)):
 			incoming_poll_numbers["%s" %(self.request.get('From'))] = "%s" % (self.request.get('Body'))	
 			channel.send_message('1234', "%s" % (self.request.get('Body')))
 			message = "Thank you for participating in the poll. Your vote has been recorded"
