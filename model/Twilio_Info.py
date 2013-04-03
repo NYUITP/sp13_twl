@@ -5,10 +5,12 @@ class Twilio_Info(db.Model):
 	#name = db.StringProperty()
 	twilio_username = db.StringProperty()
 	twilio_password = db.StringProperty()
+	twilio_url = db.StringProperty()
 	
 class Poll_Data(db.Model):
 	#Models an individual Twilio credentials entry.
 	#name = db.StringProperty()
 	poll_question = db.StringProperty()
 	poll_data = db.StringProperty()
+	user_name = db.StringProperty()
 	#poll_number = db.PhoneNumberProperty() 
