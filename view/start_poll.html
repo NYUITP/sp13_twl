@@ -107,6 +107,7 @@ function onClose(obj) {
      	<Form Action="/stop_poll" METHOD=POST>
 		<input type="hidden" name="polldata" id="poll_data" value="">
 		<input type="hidden" name="poll_question" value="{{ question }}">
+		<input type="hidden" name="poll_number" value="{{phone_number}}">
 		<p><button name="Stop Poll" type="submit">Stop Poll</button></p> 
 		</Form>       		
 		

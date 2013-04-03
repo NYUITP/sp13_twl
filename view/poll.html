@@ -23,6 +23,7 @@ function print_dict()
 	
 		<h1>{{ name }}</h1>
 		<p>To Begin the poll Please Enter Question and Save Options One by One. Next Hit Start Poll</p>
+		Number used for polling : {{ number }}
 		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
 		
 		<FORM ACTION="/option_save" METHOD=POST>
