@@ -1,0 +1,17 @@
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  <title>Poll History</title>
+</head>
+<body>
+
+	{% for poll in history_data %}
+    <a href="/results/{{ poll.key().id() }}">"{{ poll.poll_question }}"</a></br>
+
+    {% endfor %}
+	<form action="/" method="get">
+				<div style="position: absolute; right: 0;">
+                <p><button name="Home" type="submit" value="Home">Home</button></p>
+              </form>
+</body>
+</html>
