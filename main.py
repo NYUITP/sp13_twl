@@ -255,10 +255,13 @@ class Stop_Poll(webapp2.RequestHandler):
 		
 class Permalink(webapp2.RequestHandler):
     def get(self, poll_id):
+		key_list = []
+		values_list = []
 		poll_data_redirect = Poll_Data.get_by_id(int(poll_id))
 		# eval(poll_data_redirect.poll_data)
-		key_list = (eval(poll_data_redirect.poll_data)).keys()
-		values_list = (eval(poll_data_redirect.poll_data)).values()
+		if((len(str(poll_data_redirect.poll_data))) > 0) :
+			key_list = (eval(poll_data_redirect.poll_data)).keys()
+			values_list = (eval(poll_data_redirect.poll_data)).values()
 		template_values = {
 			'poll_data_redirect': Poll_Data.get_by_id(int(poll_id)),
 			'poll_id': poll_id,
