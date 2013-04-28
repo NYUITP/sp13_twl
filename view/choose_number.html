@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	      <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	    </head>
-		  <body>	
-		</form>
+   <head>
+      <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+	  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+	  <title>Select Number</title>
+   </head>  
+   <body>	
+     <legend>Select Number</legend>	
 		<form action="/add_sms_url" method="post">
-		{% for number in  numbers  %}
-		<input type="radio" name="number" value="{{ number.phone_number }}" /> {{ number.phone_number }}<br />
+		  {% for number in  numbers  %}
+		  <input type="radio" name="number" value="{{ number.phone_number }}" /> {{ number.phone_number }}<br />
 		  {% endfor %}
-		  <input type="submit" value="Submit">
-              </form>
-		  </body>
-		  </html>
+		  </br>
+		  <button class="btn btn-small btn-success span1" name="submit" type="submit" value="Submit">Submit</button>
+		 
+       </form>
+       	 <form action="/" method="get">
+	        </br><p><button name="Home" type="submit" value="Home" class="btn btn-primary active"></i>Home</button></p> 
+	     </form>
+  </body>
+</html>
