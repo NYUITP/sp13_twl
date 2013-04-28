@@ -1,0 +1,197 @@
+<html>
+	
+    <head>
+	<link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+	<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+      <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
+      <script type="text/javascript">
+	var i = 1;
+	var counter = 0 ; 
+	var min = 0 ;
+	var hours = 0 ;
+	var timer;
+	var time;
+	var channel;
+	var socket;
+	var index_delete;
+	var names_list = []
+	var number_list = []
+	
+if( !window.XMLHttpRequest ) XMLHttpRequest = function()
+    {
+      try{ return new ActiveXObject("Msxml2.XMLHTTP.6.0") }catch(e){}
+      try{ return new ActiveXObject("Msxml2.XMLHTTP.3.0") }catch(e){}
+      try{ return new ActiveXObject("Msxml2.XMLHTTP") }catch(e){}
+      try{ return new ActiveXObject("Microsoft.XMLHTTP") }catch(e){}
+      throw new Error("Could not find an XMLHttpRequest alternative.")
+    };
+
+function channel_create(){
+	channel = new goog.appengine.Channel('{{ channel_key }}');
+	socket = channel.open();
+	socket.onopen = onOpened;
+	socket.onmessage = onMessage;
+	socket.onerror = onError;
+	socket.onclose = onClose;
+}	
+
+	function countUP () {
+	 counter = counter + 1;//increment the counter by 1
+	 if(counter > 59)
+	 {
+		min = min + 1;
+		counter = 0;
+	 }
+	 if(min > 59)
+	 {
+		hours = hours + 1;
+		min = 0;
+	 }
+	 //display the new value in the div
+	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
+	 //document.getElementById("timer_container").innerHTML = counter;
+	}
+		
+// Channel Messages
+
+
+function onOpened() {
+console.log('onError');
+}
+
+function onMessage(msg_obj) {
+	//var names_list = []
+	//console.log('onMessage');
+	//document.write ("Printing the channel message data"); // prints the value of the message variable-->
+	var sms_info = eval(String(msg_obj.data));
+	if(sms_info[2]== 'onSms'){
+	names_list.push(String(sms_info[0]));
+	number_list.push(String(sms_info[1]));
+	}
+	if(sms_info[2]== 'onFinish'){
+	var div_element_winner = document.getElementById("winner");
+	div_element_winner.innerHTML = "The winner is - ";
+	div_element_winner.innerHTML += String(sms_info[0]);
+	document.getElementById('stopRaffle').style.visibility='hidden';
+	document.getElementById('timer').style.visibility='hidden';
+	socket.close();
+	}
+	if(sms_info[2]!= 'onFinish'){
+	var div_element_user = document.getElementById("output");
+	div_element_user.innerHTML = "";
+	printRaffleEntries();
+	}
+}
+
+function onError(obj) {
+    console.log('onError');
+}
+function onClose(obj) {
+    console.log('onClose');
+}
+function printRaffleEntries()
+{
+	var root=document.getElementById('output');
+	var tabl=document.createElement('table');
+	tabl.setAttribute('class', 'table table-striped');
+	var tbod=document.createElement('tbody');
+	i = 0;
+	for(var name in names_list){
+		row=document.createElement('tr');
+			cell1=document.createElement('td');
+			cell1.appendChild(document.createTextNode(names_list[i]));
+			cell2=document.createElement('td');
+			link = document.createElement('a');
+			link.setAttribute('class', 'span2');
+			link.setAttribute('href','#');
+			link.setAttribute('onclick', "javascript:deleteEntry('" + i + "')");
+			var linkText = document.createTextNode('Delete');
+			link.appendChild(linkText);
+			cell2.appendChild(link);
+			row.appendChild(cell1);
+			row.appendChild(cell2);
+		tbod.appendChild(row);
+		i++;
+	}
+	tabl.appendChild(tbod);
+	root.appendChild(tabl);
+}
+function deleteEntry(position)
+{
+	names_list.splice(position,1);
+	number_list.splice(position,1);
+	updateUserPage(names_list,number_list,position);
+}
+
+function updateUserPage(names_list, number_list, index) {
+raffle_numbers = JSON.stringify(number_list);
+raffle_names = JSON.stringify(names_list);
+
+
+var req = new XMLHttpRequest();
+
+// Create a 'GET' request w/ an optional callback handler
+req.open('GET', '/update_user_page?index=' + index, false);
+
+// Make the actual request
+req.send(null);
+}
+
+function endRaffle() {
+raffle_numbers = JSON.stringify(number_list);
+raffle_names = JSON.stringify(names_list);
+
+var req = new XMLHttpRequest();
+
+// Create a 'GET' request w/ an optional callback handler
+req.open('GET', '/stop_raffle?raffle_names=' + raffle_names + '&raffle_incoming_numbers=' + raffle_numbers + '&raffle_number=' + "{{phone_number}}", false);
+
+// Make the actual request
+req.send(null);
+}
+function addEntry(){
+	var entry = String(document.getElementById('add_entry').value);
+	
+	var entry_number_temp = String(document.getElementById('add_entry_number').value);
+	var entry_number = entry_number_temp + "abc" ;
+	var req = new XMLHttpRequest();
+
+// Create a 'POST' request w/ an optional callback handler
+req.open('POST', '/auto_reply_raffle?From=' + entry_number + '&Body=' + entry, false);
+
+// Make the actual request
+req.send(null);
+}
+
+</script>
+
+    </head>
+	
+    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
+	<font size="6">Send your Name to this number-</font><br><br><br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label><br>
+	
+		<h1>{{ name }}</h1>
+		<p>RAFFLE PAGE</p>
+		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
+		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
+		
+		Add Entry:<input type="text" name="addEntry" id="add_entry" value="">
+		Add phone number:<input type="text" name="addEntrynumber" id="add_entry_number" value="">
+		<p><button name="Add Entry" onclick="addEntry();">Add Entry</button></p>      
+		
+		 <font size="5"><div id="output">
+
+				
+		</div></font>
+		<font size="6"><div id="winner">
+
+				
+		</div></font>
+		<p><button name="Stop Raffle" id="stopRaffle" onclick="endRaffle()" >Stop Raffle</button></p>
+		      		
+		
+    </body>
+		
+</html>
