@@ -14,42 +14,69 @@ $(document).ready(function() {
         chart: {
             renderTo: 'container',
             type: 'bar',
-            margin: [50, 50, 100, 80]
-        },
+			showAxes: false
+			},
         title: {
-            text: '{{ poll_data_redirect.poll_question }}'
+            text: '{{ poll_data_redirect.poll_question }}',
+			style: {
+
+                            font: 'normal 28px Verdana, sans-serif',
+
+                            color : 'black'
+
+                        }
         },
         xAxis: {
             categories: [
                {% for option in options_list %}
                '{{ option }}',
                {% endfor %}
-            ]
+            ],
+			labels: {
+			lineWidth: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			lineColor: 'transparent',
+			minorTickLength: 0,
+			tickLength: 0,
+				style: {
+
+                    font: 'normal 20px Verdana, sans-serif',
+					color : 'black'
+
+                        }
+					}
         },
         yAxis: {
             min: 0,
+			lineWidth: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			lineColor: 'transparent',
+			minorTickLength: 0,
+			tickLength: 0,
             title: {
-                text: 'Number of votes'
-            }
+                text: 'Number of votes',
+				style: {
+
+                            font: 'normal 20px Verdana, sans-serif',
+
+                            color : 'black'
+
+                        }
+            },
+			labels:
+            {
+			enabled: false
+			}
         },
 		tooltip: {
                 valueSuffix: 'votes'
             },
-			colors: [
-			'#4572A7', 
-			'#AA4643', 
-			'#89A54E', 
-			'#80699B', 
-			'#3D96AE', 
-			'#DB843D', 
-			'#92A8CD', 
-			'#A47D7C', 
-			'#B5CA92'
-		],
-            plotOptions: {
+			plotOptions: {
                 bar: {
                     dataLabels: {
-                        enabled: true
+                        enabled: false
                     }
                 }
             },
@@ -65,8 +92,6 @@ $(document).ready(function() {
             ]
         }]
     });
-
-
 });
 	</script>
 </head>
@@ -76,9 +101,9 @@ $(document).ready(function() {
   <script type="text/javascript" src="http://highcharts.com/js/testing.js"></script>
 <div id="container" style="height: 300px"></div>
 <div style="position: absolute; center: 0;">
-  Results link : <a href="">http://sp13-twilio.appspot.com/results/20002</a>
-  </div>
-<form action="/poll_history" method="post">
+ <font size="5">Results link : <a href="">http://sp13-twilio.appspot.com/results/{{poll_id}}</a></font>
+  </div><br><br>
+<form action="/poll_history" method="get">
 				
                 <p><button name="Profile" type="submit" value="Poll_history">Poll History</button></p>
               </form>
