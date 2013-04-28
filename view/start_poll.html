@@ -1,13 +1,24 @@
 <html>
 	
     <head>
-      <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /	>
+
+		      <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+			  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+			  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+			  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+			  <title>Twilio Poll Page </title>
+
+	  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.4.3.min.js'></script>
       <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
       <script type="text/javascript">
 	var obj_data = '{{ data_store }}';
 	var obj_options = '{{ option_data }}';
 	var options = eval ("(" + obj_options + ")");
 	var data = eval ("(" + obj_data + ")");
+	var option_list = []
+	var data_list = []
+
 	var i = 1;
 	var counter = 0
 	var min = 0
@@ -16,8 +27,108 @@
 	var time;
 	var channel;
 	var socket;
+	var chart;
+		
+$(document).ready(function() {
 
-function channel_create(){
+
+i=1;
+	for(var key in options)
+	{
+		option_list.push('Option' + ' '+ i + ' ' + options[i]);
+		data_list.push(data[options[i]]);
+		
+		//div.innerHTML += 
+		//'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>";
+		i++;
+	}
+	//i=0;
+	//for(var key in options)
+	//{
+		
+		//div.innerHTML += option_list[i] + "<br>";
+		//div.innerHTML += data_list[i] + "<br>";
+		
+		//'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>";
+		//i++;
+	//}
+
+    chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container',
+            type: 'bar',
+			showAxes: false
+        },
+        title: {
+            text: '{{ question }}',
+			style: {
+
+                            font: 'normal 28px Verdana, sans-serif',
+
+                            color : 'black'
+
+                        }
+        },
+        xAxis: {
+            categories: option_list,
+			lineWidth: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			lineColor: 'transparent',
+			minorTickLength: 0,
+			tickLength: 0,
+			labels: {
+				style: {
+
+                    font: 'normal 20px Verdana, sans-serif',
+					color : 'black'
+
+                        }
+      }	
+        },
+        yAxis: {
+            min: 0,
+			gridLineWidth: 0,
+			minorTickLength: 0,
+			tickLength: 0,
+            title: {
+                text: 'Number of votes',
+				style: {
+
+                            font: 'normal 20px Verdana, sans-serif',
+
+                            color : 'black'
+
+                        }
+            },
+			labels:
+            {
+			enabled: false
+			}
+        },
+		tooltip: {
+                valueSuffix: 'votes'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'Votes',
+            data: data_list
+        }]
+    });
+
+
+});
+
+function channel_create(){ 
 	channel = new goog.appengine.Channel('{{ channel_key }}');
 	socket = channel.open();
 	socket.onopen = onOpened;
@@ -42,16 +153,6 @@ function channel_create(){
 	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
 	 //document.getElementById("timer_container").innerHTML = counter;
 	}
-		
-function print_dict()
-{			var div = document.getElementById("output");
-	i=1;
-	for(var key in options)
-	{
-		div.innerHTML += 'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>";
-		i++;
-	}
-}
 
 
 // Channel Messages
@@ -65,13 +166,17 @@ function onMessage(msg_obj) {
 	//console.log('onMessage');
 	//document.write ("Printing the channel message data"); // prints the value of the message variable-->
 	//document.write (msg_obj.data);-->
-	var div_element = document.getElementById("output");
-	div_element.innerHTML = "";
-	var option_name = options[String(msg_obj.data)];
-	data[option_name] += 1;
+	//var div_element = document.getElementById("output");
+	//div_element.innerHTML = "";
+	var poll_sms_info = eval(String(msg_obj.data));
+	if(poll_sms_info[1]== 'onSms'){
+	var option_number = Number(poll_sms_info[0]);
+	data_list[option_number - 1] += 1;
+	chart.series[0].setData(data_list);
 	var poll_data_element = document.getElementById("poll_data");
-	poll_data_element.value = JSON.stringify(data);
-	print_dict();
+	poll_data_element.value = JSON.stringify(data_list);
+	}
+	//print_dict();
 	//poll_count = Number(document.getElementById('userInput1').innerHTML) + 1 ; 
 	//document.getElementById('userInput1').innerHTML = poll_count
 
@@ -86,24 +191,20 @@ function onClose(obj) {
 
     </head>
 	
-    <body onload='timer=setInterval("countUP()", 1000 );print_dict();channel_create();'>
-	Send your choice to this number: <label id="phoneNumber">"{{ phone_number }}"</label><br>
+    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
+	<legend>Twilio Poll Page</legend>
+	<font size="6">Sms the option number of your choice to this number: <label id="phoneNumber">"{{ phone_number }}"</label></font><br>
 	
 		<h1>{{ name }}</h1>
 		<p>START POLL PAGE</p>
 		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
 		<p>Elapsed Time :<div id="timer_container">0</div></p>
-		<FORM ACTION="/option_save" METHOD=POST name="form1">
-		 your question:<BR>
-		<TEXTAREA NAME="question" COLS=40 ROWS=3>{{ question }}</TEXTAREA><BR><BR>			
-		 Your Options: <BR>			
-		</FORM>
-
-		<div id="output">
-
-				
-		</div>
 		
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript" src="http://highcharts.com/js/testing.js"></script>
+<div id="container" style="height: 300px"></div>
+
      	<Form Action="/stop_poll" METHOD=POST>
 		<input type="hidden" name="polldata" id="poll_data" value="">
 		<input type="hidden" name="poll_question" value="{{ question }}">
