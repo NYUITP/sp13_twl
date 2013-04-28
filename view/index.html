@@ -2,52 +2,35 @@
 <html lang="en">
     <head>
 	      <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
-		  
 		  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
 		  <title>Twilio Home Page </title>
 	</head>
     <body>
-	<div class="container">
-	<legend>Twilio Index Page</legend>
-	<h3>Hello {{ name }}</h3>
-     <div class="rightside">
-		
-	<button class="btn btn-danger btn-small btn-primary span1.5 pull-right" href="{{ url }}"><i class="icon-off"></i> Sign Out</button>
-		</br></br>
-	 <form action="/profile" method="post">
-		<button name="Profile" class="btn btn-small btn-primary span1.5 pull-right" type="submit" value="Profile" >Profile Page</button></br>
-      </form>
-		 <form action="/poll_history" method="post">
-			
-         <button class="btn btn-small btn-primary span1.5 pull-right" name="Profile" type="submit" value="Poll_history">Poll History</button>
-       </form>
-	</div>	
-	
-		<div class="leftside">
-	  <form action="/poll_number" method="post">
-		
-		<button name="Go To Poll" class="btn btn-small btn-primary span1.5" type="submit" value="Twilio_Poll">Go To Poll</button></br>
-	
-      </form>
-	  <form action="/poll_number" method="post">
-		
-		<button name="Go To Raffle" class="btn btn-small btn-primary span1.5" type="submit" value="Twilio_Poll">Go To Raffle</button>
-		
-      </form>
-	</div>
-
-	</div>
-    </body>
-  </html>
-
-
-
-
-
-
-
-
-
-
+		<legend>Twilio Index Page</legend>
+	      <h3>Hello {{ name }}</h3>
+	      <div class="container rightside">	
+		    <form action="{{ url }}" method="post">
+	          <button class="btn btn-danger btn-small btn-primary span2" type="submit"><i class="icon-off"></i> Sign Out</button>
+	        </form>
+		    </br>
+		    <form action="/profile" method="post">
+		      <button name="Profile" class="btn btn-small btn-primary span2" type="submit" value="My Profile" >Profile Page</button>
+            </form></br>
+          	<form action="/poll_history" method="get">
+			  <button class="btn btn-small btn-primary span2" name="Profile" type="submit" value="Poll_history">Poll History</button>
+	        </form>
+		 </div>
+		 <div class=" container leftside">
+			<form action="/poll_number" method="post">
+		      <button name="Go To Poll" class="btn btn-small btn-primary span2" type="submit" value="Twilio_Poll">Go To Poll</button>
+			  <input type="hidden" name="activity" value="Poll">
+	        </form></br>
+		  	<form action="/poll_number" method="post">
+			  <button name="Go To Raffle" class="btn btn-small btn-primary span2" type="submit" value="Twilio_Poll">Go To Raffle</button>
+			  <input type="hidden" name="activity" value="Raffle">
+		    </form>
+		</div>
+   </body>
+</html>
