@@ -1,17 +1,36 @@
 <html>
 <head>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  <title>Poll History</title>
+  	  <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+	  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+      <title>Poll History</title>
 </head>
 <body>
-
-	{% for poll in history_data %}
-    <a href="/results/{{ poll.key().id() }}">"{{ poll.poll_question }}"</a></br>
-
-    {% endfor %}
-	<form action="/" method="get">
-				<div style="position: absolute; right: 0;">
-                <p><button name="Home" type="submit" value="Home">Home</button></p>
-              </form>
+      <legend>Poll History</legend>	
+      <h4> Select a Poll Question </h4>
+      
+      <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Poll Questions</th>  
+            <th></th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+		 {% for poll in history_data %}
+          <tr>  
+            <td><a href="/results/{{ poll.key().id() }}">"{{ poll.poll_question }}"</a></td>  
+            <td><a class="span2" href="/delete_poll/{{ poll.key().id() }}">Delete</a></td>  
+          </tr> 
+		{% endfor %}		  
+		</tbody>  
+      </table>
+     
+      </br>
+	  <form action="/" method="get">
+        <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">home</button></p> 
+      </form>
+      
 </body>
 </html>
