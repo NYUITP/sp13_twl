@@ -1,0 +1,104 @@
+<html>
+	
+    <head>
+	<link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+	<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+      <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
+      <script type="text/javascript">
+	var i = 1;
+	var counter = 0 ; 
+	var min = 0 ;
+	var hours = 0 ;
+	var timer;
+	var time;
+	var channel;
+	var socket;
+	var channel_1;
+	var socket_1;
+	var names_list = []
+	var number_list = [] 
+	var flag = true
+
+function channel_create(){
+	channel = new goog.appengine.Channel('{{ channel_key }}');
+	socket = channel.open();
+	socket.onmessage = onMessage;
+}	
+
+	function countUP () {
+	 counter = counter + 1;//increment the counter by 1
+	 if(counter > 59)
+	 {
+		min = min + 1;
+		counter = 0;
+	 }
+	 if(min > 59)
+	 {
+		hours = hours + 1;
+		min = 0;
+	 }
+	 //display the new value in the div
+	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
+	 //document.getElementById("timer_container").innerHTML = counter;
+	}	
+
+function onMessage(msg_obj) {
+	var temp_list = []
+	var index = []
+	var sms_info = eval(String(msg_obj.data));
+	
+	if(sms_info[2]== 'onSms'){
+	names_list.push(String(sms_info[0]));
+	number_list.push(String(sms_info[1]));
+	}
+	if(sms_info[2]== 'onDelete'){
+	names_list.splice(parseInt(sms_info[3]),1);
+	number_list.splice(parseInt(sms_info[3]),1);
+	}
+	if(sms_info[2]== 'onFinish'){
+	var div_element_winner = document.getElementById("winner");
+	div_element_winner.innerHTML = "<br>";
+	div_element_winner.innerHTML += "The winner is - ";
+	div_element_winner.innerHTML += String(sms_info[0]);
+	document.getElementById('timer').style.visibility='hidden';
+	socket.close();
+	}
+	if(sms_info[2]!= 'onFinish'){
+	var div_element_user = document.getElementById("output");
+	div_element_user.innerHTML = "";
+	i=0;
+	for(var name in names_list)
+	{
+	div_element_user.innerHTML += names_list[i] + "<br>";
+	i++;
+	}
+	}
+}
+
+</script>
+
+    </head>
+	
+    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
+	<font size="6">Send your Name to this number - </font><br><br><br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label><br>
+	
+		<h1>{{ name }}</h1>
+		<p>RAFFLE PAGE</p>
+		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
+		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
+
+		<font size="5"><div id="output">
+
+				
+		</div></font>
+		<font size="6"><div id="winner">
+
+				
+		</div></font>
+		<div type="hidden" id="hidden_numbers"></div>
+     	
+    </body>
+		
+</html>
