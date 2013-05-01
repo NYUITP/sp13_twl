@@ -1,6 +1,10 @@
 <html>
     <head>
-      <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /	>
+          <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+		  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		  <title>Poll Page </title>
 <script type="text/javascript">
 	  var obj = '{{ data_store }}';
 	var obj1 = eval ("(" + obj + ")");
@@ -19,31 +23,32 @@ function print_dict()
 	</script>	
     </head>
     <body onload='print_dict();'>
+	<legend>Poll Page</legend>
 	
 	
 		<h1>{{ name }}</h1>
 		<p>To Begin the poll Please Enter Question and Save Options One by One. Next Hit Start Poll</p>
 		Number used for polling : {{ number }}
-		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
-		
+
 		<FORM ACTION="/option_save" METHOD=POST>
 		 your question:<BR>
 		<TEXTAREA NAME="question" COLS=40 ROWS=3>{{ question }}</TEXTAREA><BR><BR>			
 		 Your Options(Enter Options one by one and Press Save Option): <BR>			
 		<input type="text" name="options">
-		<input type="hidden" name="number" value="{{ number }}">
-		<p><button name="Options" type="submit" value="option">Add next Option</button></p>
+	       	 <input type="hidden" name="number" value="{{ number }}">
+		     <p><button class="btn btn-success active" name="Options" type="submit" value="option">Add next Option</button></p>
 		</FORM>
 		<div id="output">
 				
-		</div>
-		
+		</div>	
 		<Form Action="/Start_Poll" METHOD=POST>
-	    <TEXTAREA NAME="question" COLS=40 ROWS=6 style="display: none;">{{ question }}</TEXTAREA><BR><BR>
-		<input type="hidden" name="number" value="{{ number }}">
-			<p><button name="Start Poll" type="submit">Start Poll</button></p> 
-			</Form>      
-		
-		
+	        <TEXTAREA NAME="question" COLS=40 ROWS=6 style="display: none;">{{ question }}</TEXTAREA><BR>
+	     	<input type="hidden" name="number" value="{{ number }}">
+			<p><button class="btn btn-success active" name="Start Poll" type="submit">Start Poll</button></p> 
+		</Form>     
+		 
+        <form action="/" method="get">
+		    <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">Home</button></p> 
+        </form>
     </body>
 </html>

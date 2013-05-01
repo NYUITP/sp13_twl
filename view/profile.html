@@ -2,30 +2,26 @@
 <html lang="en">
 <head>
       	<link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
-		  
-		  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
-		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		<title>Profile Page </title>
 </head>
 	  <body>
-	  <div class="centerside">	
 	  <div class="container">	 
-	  
 	  <legend>Twilio Authentication Inputs</legend>	
       <form action="/save?%{{ key }}" method="post">
-		<input class="span3" name="username" placeholder="Account Sid" type="text"><br>
-		<input class="span3" name="password" placeholder="Authentication Token" type="password"><br> 
-		<input class="span3" name="URL" placeholder="Evangelist URL" type="text"><br> 
-		<p><a class="btn btn-success btn-small" href="#"><i class="icon-ok"></i>Submit</a></p>
+		<input class="span2.5" name="username" placeholder="Account Sid" type="text"><br>
+		<input class="span2.5" name="password" placeholder="Authentication Token" type="password"><br> 
+		<input class="span2.5" name="URL" placeholder="Evangelist URL" type="text"><br> 
+	
+		<button class="btn btn-success btn-small" name="submit" type="submit" value="Submit">Submit</button>
       </form>
-	  
+	  <form action="/" method="get">
+	        <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">Home</button></p> 
+	  </form>
 	  </div> 	
 	  </div>
 	  </body>
 	
 </html>	
-
-
-
-
-
