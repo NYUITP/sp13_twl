@@ -5,6 +5,9 @@
 	<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+		<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
       <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
       <script type="text/javascript">
 	var i = 1;
@@ -95,25 +98,27 @@ function printRaffleEntries()
 {
 	var root=document.getElementById('output');
 	var tabl=document.createElement('table');
-	tabl.setAttribute('class', 'table table-striped');
 	var tbod=document.createElement('tbody');
 	i = 0;
 	for(var name in names_list){
 		row=document.createElement('tr');
 			cell1=document.createElement('td');
+			cell1.setAttribute('style', 'font-size:26px');
 			cell1.appendChild(document.createTextNode(names_list[i]));
 			cell2=document.createElement('td');
+			button = document.createElement('button');
 			link = document.createElement('a');
+			link1 = document.createElement('i');
 			link.setAttribute('class', 'span2');
+			link1.setAttribute('class', 'icon-remove');
 			link.setAttribute('href','#');
 			link.setAttribute('onclick', "javascript:deleteEntry('" + i + "')");
-			var linkText = document.createTextNode('Delete');
-			link.appendChild(linkText);
+			link.appendChild(link1);
 			cell2.appendChild(link);
 			row.appendChild(cell1);
 			row.appendChild(cell2);
-		tbod.appendChild(row);
-		i++;
+			tbod.appendChild(row);
+			i++;
 	}
 	tabl.appendChild(tbod);
 	root.appendChild(tabl);
@@ -155,7 +160,7 @@ function addEntry(){
 	var entry = String(document.getElementById('add_entry').value);
 	
 	var entry_number_temp = String(document.getElementById('add_entry_number').value);
-	var entry_number = entry_number_temp + "abc" ;
+	var entry_number = Number(entry_number_temp);
 	var req = new XMLHttpRequest();
 
 // Create a 'POST' request w/ an optional callback handler
@@ -170,28 +175,45 @@ req.send(null);
     </head>
 	
     <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
+	<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
 	<font size="6">Send your Name to this number-</font><br><br><br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label><br>
 	
-		<h1>{{ name }}</h1>
-		<p>RAFFLE PAGE</p>
-		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
+		<p><font size="4" color="black">RAFFLE PAGE</font></p>
 		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
 		
-		Add Entry:<input type="text" name="addEntry" id="add_entry" value="">
-		Add phone number:<input type="text" name="addEntrynumber" id="add_entry_number" value="">
-		<p><button name="Add Entry" onclick="addEntry();">Add Entry</button></p>      
+		<font size="4" color="black">Add Entry:</font><input type="text" name="addEntry" id="add_entry" value="">
+		<font size="4" color="black">Add phone number:</font><input type="text" name="addEntrynumber" id="add_entry_number" value="">
+		<p><button name="Add Entry" class="btn btn-primary active" onclick="addEntry();">Add Entry</button></p>    
 		
-		 <font size="5"><div id="output">
+		<div class="container">
+		 <font size="5"><div id="output" align="center">
+
+			
+		</div>
+		</font>	
+		<font size="6" color="white"><div id="winner" >
 
 				
 		</div></font>
-		<font size="6"><div id="winner">
-
-				
-		</div></font>
-		<p><button name="Stop Raffle" id="stopRaffle" onclick="endRaffle()" >Stop Raffle</button></p>
+		</div>
+		<p><button name="Stop Raffle" id="stopRaffle" class="btn btn-success active" onclick="endRaffle();">Stop Raffle</button></p>
 		      		
-		
     </body>
 		
 </html>
