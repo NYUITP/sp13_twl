@@ -5,32 +5,46 @@
 		  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+		
+		 
+		  <link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
+		
+		
 		  <title>Twilio Home Page </title>
+		
+		
 	</head>
     <body>
-		<legend>Twilio Index Page</legend>
-	      <h3>Hello {{ name }}</h3>
-	      <div class="container rightside">	
-		    <form action="{{ url }}" method="post">
-	          <button class="btn btn-danger btn-small btn-primary span2" type="submit"><i class="icon-off"></i> Sign Out</button>
-	        </form>
-		    </br>
-		    <form action="/profile" method="post">
-		      <button name="Profile" class="btn btn-small btn-primary span2" type="submit" value="My Profile" >Profile Page</button>
-            </form></br>
-          	<form action="/poll_history" method="get">
-			  <button class="btn btn-small btn-primary span2" name="Profile" type="submit" value="Poll_history">Poll History</button>
-	        </form>
-		 </div>
-		 <div class=" container leftside">
+		<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
+		
+	      <h3><font color="black">Hello {{ name }}!</font></h3>
+			</br>		  
 			<form action="/poll_number" method="post">
-		      <button name="Go To Poll" class="btn btn-small btn-primary span2" type="submit" value="Twilio_Poll">Go To Poll</button>
+		      <button name="Go To Poll" class="btn btn-small btn-primary span2" style="float: none; margin: 0 auto;" type="submit" value="Twilio_Poll">Go To Poll</button>
 			  <input type="hidden" name="activity" value="Poll">
-	        </form></br>
+	        </form>
 		  	<form action="/poll_number" method="post">
-			  <button name="Go To Raffle" class="btn btn-small btn-primary span2" type="submit" value="Twilio_Poll">Go To Raffle</button>
+			  <button name="Go To Raffle" class="btn btn-small btn-primary span2" style="float: none; margin: 0 auto;" type="submit" value="Twilio_Poll">Go To Raffle</button>
 			  <input type="hidden" name="activity" value="Raffle">
 		    </form>
-		</div>
    </body>
+
 </html>
