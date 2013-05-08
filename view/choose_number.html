@@ -5,20 +5,36 @@
 	  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+	  <link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+	  <link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
 	  <title>Select Number</title>
    </head>  
    <body>	
+   <header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
      <legend>Select Number</legend>	
 		<form action="/add_sms_url" method="post">
 		  {% for number in  numbers  %}
-		  <input type="radio" name="number" value="{{ number.phone_number }}" /> {{ number.phone_number }}<br />
+		  <input type="radio" name="number" value="{{ number.phone_number }}" /> <font size="4" color="black">{{ number.phone_number }}</font></br></br>
 		  {% endfor %}
 		  </br>
-		  <button class="btn btn-small btn-success span1" name="submit" type="submit" value="Submit">Submit</button>
-		 
+		  <button class="btn btn-small btn-success span1" name="submit" style="float: none; margin: 0 auto;" type="submit" value="Submit">Submit</button> 
        </form>
-       	 <form action="/" method="get">
-	        </br><p><button name="Home" type="submit" value="Home" class="btn btn-primary active"></i>Home</button></p> 
-	     </form>
   </body>
 </html>
