@@ -56,7 +56,7 @@ function print_dict()
 		<input type="text" name="options">
 	       	 <input type="hidden" name="number" value="{{ number }}">
 			 <input type="hidden" name="nickname" value="{{ user_nickname }}">
-		     <p><button class="btn btn-success active" name="Options" type="submit" value="option">Add next Option</button></p>
+		     <p><button class="btn active" name="Options" type="submit" value="option">Add next Option</button></p>
 		</FORM>
 		<div id="output">
 				
@@ -64,9 +64,16 @@ function print_dict()
 		<Form Action="/Start_Poll" METHOD=POST>
 	        <TEXTAREA NAME="question" COLS=40 ROWS=6 style="display: none;">{{ question }}</TEXTAREA><BR>
 	     	<input type="hidden" name="number" value="{{ number }}">
-			<p><button class="btn btn-success active" name="Start Poll" type="submit">Start Poll</button></p> 
+			<p><button class="btn active" name="Start Poll" type="submit">Start Poll</button></p> 
 		</Form>     
 		<font size="5">Poll link for Users : <a href="http://sp13-twilio.appspot.com/polling/{{user_nickname}}">http://sp13-twilio.appspot.com/polling/{{user_nickname}}</a></font>
 		</font>
+		<footer>
+		        <p class="footer">
+					</br>
+					</br>
+		            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
+		        </p>
+		    </footer>
     </body>
 </html>
