@@ -50,6 +50,7 @@ class Profile(webapp2.RequestHandler):
     def get(self):
 		template_values = {
             'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
+			'url': users.create_logout_url("/"),	
 		}
 		template = jinja_environment.get_template('profile.html')
 		self.response.out.write(template.render(template_values))
@@ -68,6 +69,7 @@ class Poll_Number(webapp2.RequestHandler):
 		global data_number
 		data_number = 1
 		template_values = {
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('poll_number.html')
 		self.response.out.write(template.render(template_values))		
@@ -90,6 +92,7 @@ class Choose_Number(webapp2.RequestHandler):
 		template_values = {
 			'numbers' : numbers,
             'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),	
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('choose_number.html')
 		self.response.out.write(template.render(template_values))
@@ -197,6 +200,7 @@ class Twilio_Poll(webapp2.RequestHandler):
 			'data_store': json.dumps(data),
 			'number' : self.request.get('number'),
 			'user_nickname' : users.get_current_user().nickname(),
+			'url': users.create_logout_url("/"),
  		}
 		template = jinja_environment.get_template('poll.html')
 		self.response.out.write(template.render(template_values))	
@@ -229,6 +233,7 @@ class Start_Poll(webapp2.RequestHandler):
 			'phone_number': self.request.get('number'),
 			'client_id': users.get_current_user().nickname(),
 			'channel_key': channel_key,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('start_poll.html')
 		self.response.out.write(template.render(template_values))
@@ -244,6 +249,7 @@ class Start_Poll_User(webapp2.RequestHandler):
 			'option_data': json.dumps(option_data),
 			'phone_number': poll_number,
 			'channel_key': channel_key,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('start_poll_user.html')
 		self.response.out.write(template.render(template_values))
@@ -294,6 +300,7 @@ class Permalink(webapp2.RequestHandler):
 			'poll_id': poll_id,
 			'options_list' : key_list,
 			'votes_list' : values_list,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('results.html')
 		self.response.out.write(template.render(template_values))
@@ -305,6 +312,7 @@ class Poll_History(webapp2.RequestHandler):
 		poll_history_data = entity.run()
  		template_values = {
 		    'history_data': poll_history_data,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('poll_history.html')
 		self.response.out.write(template.render(template_values))
@@ -326,6 +334,7 @@ class Start_Raffle(webapp2.RequestHandler):
  		template_values = {
 			'phone_number': self.request.get('number'),
 			'channel_key': channel_key,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('start_raffle.html')
 		self.response.out.write(template.render(template_values))
@@ -337,6 +346,7 @@ class Start_Raffle_User(webapp2.RequestHandler):
  		template_values = {
 			'phone_number': raffle_number,
 			'channel_key': channel_key,
+			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('start_raffle_user.html')
 		self.response.out.write(template.render(template_values))
