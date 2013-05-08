@@ -1,0 +1,141 @@
+body,html {
+	 background-image: url("/stylesheets/css/background_twilio.png");
+	 background-size:100% 100%;
+	 background-repeat:no-repeat;
+	 background-attachment: fixed;
+	 background-position: top center;
+}
+
+#header {
+	width: 300px;
+    margin: 0 auto;
+    padding: 100px 0 0 0;
+    background: url("http://static0.twilio.com/packages/twilio-conference/img/twilio-logo-2012-header.png") no-repeat center;
+	
+}
+
+#header .section-heading {
+    line-height: 20px;
+    margin: 0;
+    padding: 0 0 0 233px;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 52px;
+    font-weight: 100;
+    color: #FFF;
+    text-align: center;
+   
+}
+
+#content {
+    width: 960px;
+    height: 250px;
+    margin: 0 auto;
+    padding: 90px 0 0 0;
+}
+
+#content .section-heading {
+    margin: 0 0 10px 0;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 38px;
+    font-weight: 100;
+    color: #7C0000;
+    text-align: center;
+}
+
+#content .blurb {
+    line-height: 1.2em;
+    margin: 5px 0 20px 85px;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 17px;
+    font-weight: 100;
+    color: #DDD;
+}
+
+#url_list {
+    margin: 10px 0 20px 85px;
+}
+
+#url_list dt {
+    line-height: 1.2em;
+    margin: 0px;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 14px;
+    font-weight: 100;
+    color: #DDD;
+}
+
+#url_list dd, #content a {
+    font-family: 'Helvetica',sans-serif;
+    font-weight: 100;
+    color: #7C0000;
+}
+
+#url_list a {
+    font-size: 18px;
+    margin: 3px 0 5px 30px;
+}
+
+#content a:hover {
+    color: #FFF;
+}
+
+#content a {
+    text-decoration: none;
+}
+
+#content form {
+    width: 200px;
+    float: right;
+    margin: -55px 100px 0 0;
+    padding: 10px;
+    font-family: 'Helvetica',sans-serif;
+    color: #7C0000;
+}
+
+#content label {
+    font-size: 14px;
+    font-weight: 60;
+    text-align: left;
+    padding: 5px 0 5px 0;
+}
+
+#content #phone_number {
+    width: 198px;
+    font-size: 18px;
+    font-weight: 60;
+    text-align: left;
+    padding: 5px 0 5px 0;
+    margin-bottom: 5px;
+}
+
+#content #phone_number input {
+    border: 2px solid #454545;
+}
+
+#content #phone_number input:hover, #content #phone_number input:focus {
+    border: 2px solid #efefef;
+}
+
+
+
+#form ul, #form li {
+    margin: 0;
+    list-style: none;
+}
+
+.footer {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    color: #7C0000;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #7C0000;
+}
+
+.footer a:hover {
+    color: #FFF;
+}
+
