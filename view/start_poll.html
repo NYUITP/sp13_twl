@@ -6,6 +6,9 @@
 			  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 			  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 			  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+			  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+			<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+			<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
 			  <title>Twilio Poll Page </title>
 
 	  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -57,7 +60,8 @@ i=1;
         chart: {
             renderTo: 'container',
             type: 'bar',
-			showAxes: false
+			showAxes: false,
+			backgroundColor: null  
         },
         title: {
             text: '{{ question }}',
@@ -191,14 +195,29 @@ function onClose(obj) {
 
     </head>
 	
-    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
-	<legend>Twilio Poll Page</legend>
-	<font size="6">Sms the option number of your choice to this number: <label id="phoneNumber">"{{ phone_number }}"</label></font><br>
+    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'><font size="4" color="black">
+	<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
+	<legend><font size="6">Twilio Poll Page</font></legend>
+	<font size="6">Sms the option number of your choice to this number:</br></br> 
+	<label id="phoneNumber"><font size="6">"{{ phone_number }}"</font></label></font></br>
 	
-		<h1>{{ name }}</h1>
-		<p>START POLL PAGE</p>
-		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
-		<p>Elapsed Time :<div id="timer_container">0</div></p>
+		<font size="5"><p>Elapsed Time :<div id="timer_container">0</div></p></font>
 		
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -209,9 +228,9 @@ function onClose(obj) {
 		<input type="hidden" name="polldata" id="poll_data" value="">
 		<input type="hidden" name="poll_question" value="{{ question }}">
 		<input type="hidden" name="poll_number" value="{{phone_number}}">
-		<p><button name="Stop Poll" type="submit">Stop Poll</button></p> 
+		<p><button name="Stop Poll" class="btn btn-success active" type="submit">Stop Poll</button></p> 
 		</Form>       		
-		
+		</font>
     </body>
 		
 </html>
