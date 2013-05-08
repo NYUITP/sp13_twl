@@ -4,24 +4,44 @@
 	  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+			<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+			<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
       <title>Poll History</title>
 </head>
-<body>
-      <legend>Poll History</legend>	
-      <h4> Select a Poll Question </h4>
+<body><font size="4" color="black">
+	<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
+      <legend><font size="4" color="black">Poll History</font></legend>	
+      <h4> <font size="4" color="black">Select a Poll Question</font> </h4>
       
       <table class="table table-striped">  
         <thead>  
           <tr>  
-            <th>Poll Questions</th>  
+            <th><font size="4" color="black">Poll Questions</font></th>  
             <th></th>  
           </tr>  
         </thead>  
         <tbody>  
-		 {% for poll in history_data %}
+		 <font size="4" color="black">{% for poll in history_data %}</font>
           <tr>  
             <td><a href="/results/{{ poll.key().id() }}">"{{ poll.poll_question }}"</a></td>  
-            <td><a class="span2" href="/delete_poll/{{ poll.key().id() }}">Delete</a></td>  
+            <td><button><a href="/delete_poll/{{ poll.key().id() }}"><i class="icon-remove"></i></a></td>  
           </tr> 
 		{% endfor %}		  
 		</tbody>  
@@ -31,6 +51,6 @@
 	  <form action="/" method="get">
         <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">home</button></p> 
       </form>
-      
+      </font>
 </body>
 </html>
