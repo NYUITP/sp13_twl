@@ -5,11 +5,31 @@
 		<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+		<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
 		<title>Profile Page </title>
 </head>
 	  <body>
+	  <header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
 	  <div class="container">	 
-	  <legend>Twilio Authentication Inputs</legend>	
+	  <legend><font size="4" color="black">Twilio Authentication</font></legend>	
       <form action="/save?%{{ key }}" method="post">
 		<input class="span2.5" name="username" placeholder="Account Sid" type="text"><br>
 		<input class="span2.5" name="password" placeholder="Authentication Token" type="password"><br> 
@@ -17,9 +37,6 @@
 	
 		<button class="btn btn-success btn-small" name="submit" type="submit" value="Submit">Submit</button>
       </form>
-	  <form action="/" method="get">
-	        <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">Home</button></p> 
-	  </form>
 	  </div> 	
 	  </div>
 	  </body>
