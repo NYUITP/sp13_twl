@@ -4,6 +4,8 @@
 		  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
 		  <title>Poll Page </title>
 <script type="text/javascript">
 	  var obj = '{{ data_store }}';
@@ -14,7 +16,6 @@
 function print_dict()
 {			var div = document.getElementById("output");
 
-
 	for(var key in obj1){
 		div.innerHTML += ' ' + key + ' ' + "<br>";
 		i++;	
@@ -22,7 +23,24 @@ function print_dict()
 }
 	</script>	
     </head>
-    <body onload='print_dict();'>
+    <body onload='print_dict();'><font size="4" color="black">
+	<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation" style="float: none; margin: 0 auto;">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
 	<legend>Poll Page</legend>
 	
 	
@@ -31,11 +49,13 @@ function print_dict()
 		Number used for polling : {{ number }}
 
 		<FORM ACTION="/option_save" METHOD=POST>
-		 your question:<BR>
+		<BR>
+		 Your Question:<BR>
 		<TEXTAREA NAME="question" COLS=40 ROWS=3>{{ question }}</TEXTAREA><BR><BR>			
 		 Your Options(Enter Options one by one and Press Save Option): <BR>			
 		<input type="text" name="options">
 	       	 <input type="hidden" name="number" value="{{ number }}">
+			 <input type="hidden" name="nickname" value="{{ user_nickname }}">
 		     <p><button class="btn btn-success active" name="Options" type="submit" value="option">Add next Option</button></p>
 		</FORM>
 		<div id="output">
@@ -46,9 +66,7 @@ function print_dict()
 	     	<input type="hidden" name="number" value="{{ number }}">
 			<p><button class="btn btn-success active" name="Start Poll" type="submit">Start Poll</button></p> 
 		</Form>     
-		 
-        <form action="/" method="get">
-		    <p><button name="Home" type="submit" value="Home" class="btn btn-primary active">Home</button></p> 
-        </form>
+		<font size="5">Poll link for Users : <a href="http://sp13-twilio.appspot.com/polling/{{user_nickname}}">http://sp13-twilio.appspot.com/polling/{{user_nickname}}</a></font>
+		</font>
     </body>
 </html>
