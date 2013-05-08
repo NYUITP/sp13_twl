@@ -5,6 +5,9 @@
 	<link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+		  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+		<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
       <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
       <script type="text/javascript">
 	var i = 1;
@@ -49,6 +52,9 @@ function onMessage(msg_obj) {
 	var index = []
 	var sms_info = eval(String(msg_obj.data));
 	
+	if(sms_info[2]== 'onStart'){
+	window.location.reload();
+	}
 	if(sms_info[2]== 'onSms'){
 	names_list.push(String(sms_info[0]));
 	number_list.push(String(sms_info[1]));
@@ -82,22 +88,39 @@ function onMessage(msg_obj) {
     </head>
 	
     <body onload='timer=setInterval("countUP()", 1000 );channel_create();'>
-	<font size="6">Send your Name to this number - </font><br><br><br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label><br>
+	<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
+		</br>
+	<font size="6">Send your Name to this number - </font></br></br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label></br>
 	
-		<h1>{{ name }}</h1>
-		<p>RAFFLE PAGE</p>
-		<div style="position: absolute; right: 5;"><a href="{{ url }}">Sign out</a></div>
-		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
+		<p><font size="4" color="black">RAFFLE PAGE</font></p>
+		<div id="timer"><p><font size="4" color="black">Elapsed Time :<div id="timer_container">0</div></p></div></font>
+	<div class="container">
+		<font size="6"><div id="output" align="center">
 
-		<font size="5"><div id="output">
+			
+		</div></font>	
+		</br>
+		<font size="6" color="white"><div id="winner">
 
 				
 		</div></font>
-		<font size="6"><div id="winner">
-
-				
-		</div></font>
-		<div type="hidden" id="hidden_numbers"></div>
+		</div>
      	
     </body>
 		
