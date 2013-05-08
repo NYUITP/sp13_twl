@@ -1,6 +1,13 @@
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/css/bootstrap.css" />
+	  <link href="/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link href="/stylesheets/css/fluid1.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css"/>
+			<link rel="stylesheet" type="text/css" href="/stylesheets/css/header.css"/>
+			<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
+	  <title>Results</title>
   <script type='text/javascript' src='http://code.jquery.com/jquery-1.4.3.min.js'></script>
 <script type='text/javascript'>
 	var obj_data = '{{ poll_data_redirect.poll_data }}';
@@ -14,7 +21,8 @@ $(document).ready(function() {
         chart: {
             renderTo: 'container',
             type: 'bar',
-			showAxes: false
+			showAxes: false,
+			backgroundColor: null  
 			},
         title: {
             text: '{{ poll_data_redirect.poll_question }}',
@@ -95,22 +103,33 @@ $(document).ready(function() {
 });
 	</script>
 </head>
-<body>
+<body><font size="4" color="black">
+<header>
+	        <div id="header">
+
+
+	        </div>
+	    </header>
+		<div id="wrap-header">
+				<div id="main-header" class="SL_swap">
+					<a id="header-logo" href="/">Twilio</a>
+					<ul class="main-navigation">
+						<li><a href="/"><i class="icon-white"></i>Home</a></li>
+						<li><a href="/poll_history"><i class="icon-white"></i>History</a></li>	
+	                  	<li><a href="/profile"><i class="icon-white"></i>Profile</a></li>
+						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
+					</ul>
+				</div>
+		</div>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script type="text/javascript" src="http://highcharts.com/js/testing.js"></script>
-<div id="container" style="height: 300px"></div>
-<div style="position: absolute; center: 0;">
+<div id="container" style="height: 300px" width="100%">
+
+	
+</div>
  <font size="5">Results link : <a href="">http://sp13-twilio.appspot.com/results/{{poll_id}}</a></font>
-  </div><br><br>
-<form action="/poll_history" method="get">
-				
-                <p><button name="Profile" type="submit" value="Poll_history">Poll History</button></p>
-              </form>
-			  <form action="/" method="get">
-				
-                <p><button name="Home" type="submit" value="Home">Home</button></p>
-              </form>
 			  </div>
+			  </font>
 </body>
 </html>
