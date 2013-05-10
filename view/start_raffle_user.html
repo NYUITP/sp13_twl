@@ -42,9 +42,7 @@ function channel_create(){
 		hours = hours + 1;
 		min = 0;
 	 }
-	 //display the new value in the div
 	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
-	 //document.getElementById("timer_container").innerHTML = counter;
 	}	
 
 function onMessage(msg_obj) {
@@ -106,12 +104,12 @@ function onMessage(msg_obj) {
 				</div>
 		</div>
 		</br>
-	<font size="6">Send your Name to this number - </font></br></br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label></br>
+	<font size="6" color="black">Send your Name to this number - </font></br></br><label style="font-size:30px;color:black;" id="phoneNumber">"{{ phone_number }}"</label></br>
 	
 		<p><font size="4" color="black">RAFFLE PAGE</font></p>
 		<div id="timer"><p><font size="4" color="black">Elapsed Time :<div id="timer_container">0</div></p></div></font>
 	<div class="container">
-		<font size="6"><div id="output" align="center">
+		<font size="6" color="black"><div id="output" align="center">
 
 			
 		</div></font>	
