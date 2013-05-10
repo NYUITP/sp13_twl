@@ -52,9 +52,7 @@ function channel_create(){
 		hours = hours + 1;
 		min = 0;
 	 }
-	 //display the new value in the div
 	 document.getElementById("timer_container").innerHTML = hours + ' : ' + min + ' : ' + counter;
-	 //document.getElementById("timer_container").innerHTML = counter;
 	}
 		
 // Channel Messages
@@ -65,9 +63,6 @@ console.log('onError');
 }
 
 function onMessage(msg_obj) {
-	//var names_list = []
-	//console.log('onMessage');
-	//document.write ("Printing the channel message data"); // prints the value of the message variable-->
 	var sms_info = eval(String(msg_obj.data));
 	if(sms_info[2]== 'onSms'){
 	names_list.push(String(sms_info[0]));
@@ -103,7 +98,7 @@ function printRaffleEntries()
 	for(var name in names_list){
 		row=document.createElement('tr');
 			cell1=document.createElement('td');
-			cell1.setAttribute('style', 'font-size:26px');
+			cell1.setAttribute('style', 'font-size:32px;color: black;');
 			cell1.appendChild(document.createTextNode(names_list[i]));
 			cell2=document.createElement('td');
 			button = document.createElement('button');
@@ -191,15 +186,19 @@ req.send(null);
 						<li><a href="{{ url }}"><i class="icon-white"></i>SignOut</a></li>
 					</ul>
 				</div>
-		</div>
-	<font size="6">Send your Name to this number-</font><br><br><br><label style="font-size:26px" id="phoneNumber">"{{ phone_number }}"</label><br>
+		</div></br>
+	<font size="6"color="black">Send your Name to this number-</font><br><br><br><label style="font-size:30px;color:black;" id="phoneNumber">"{{ phone_number }}"</label><br>
 	
 		<p><font size="4" color="black">RAFFLE PAGE</font></p>
+		
+		<font size="5" color="black">Raffle link for Users : <a href="http://sp13-twilio.appspot.com/raffle/{{user_nickname}}">http://sp13-twilio.appspot.com/raffle/{{user_nickname}}</a></font>
+		</font>
+		
 		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
 		
-		<font size="4" color="black">Add Entry:</font><input type="text" name="addEntry" id="add_entry" value="">
+		<font size="4" color="black">Add Entry:</font><input type="text" name="addEntry" id="add_entry" value=""></br>
 		<font size="4" color="black">Add phone number:</font><input type="text" name="addEntrynumber" id="add_entry_number" value="">
-		<p><button name="Add Entry" class="btn active" onclick="addEntry();">Add Entry</button></p>    
+		<p><button name="Add Entry" class="btn btn-small" onclick="addEntry();">Add Entry</button></p>    
 		
 		<div class="container">
 		 <font size="5"><div id="output" align="center">
@@ -212,7 +211,7 @@ req.send(null);
 				
 		</div></font>
 		</div>
-		<p><button name="Stop Raffle" id="stopRaffle" class="btn active" onclick="endRaffle();">Stop Raffle</button></p>
+		<p><button name="Stop Raffle" id="stopRaffle" class="btn btn-small" onclick="endRaffle();">Stop Raffle</button></p>
 		      		<footer>
 					        <p class="footer">
 								</br>
