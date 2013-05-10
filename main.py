@@ -27,7 +27,8 @@ poll_id = 0
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'view')))
-	
+
+# Index Page (Controller)	
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 		user = users.get_current_user()
@@ -46,6 +47,8 @@ class MainHandler(webapp2.RequestHandler):
 		else:
 			self.redirect(users.create_login_url(self.request.uri))
 			
+# Profile Page
+# Set User Profile by adding TWILIO Credentials (Account SID, Authentication Code) and Evangelist URL(Displayed at the End of the POLL)	
 class Profile(webapp2.RequestHandler):
     def get(self):
 		template_values = {
@@ -55,6 +58,7 @@ class Profile(webapp2.RequestHandler):
 		template = jinja_environment.get_template('profile.html')
 		self.response.out.write(template.render(template_values))
 		
+# Allows User to Generate New Local Number or Select an prepurchased Existing Number from the database
 class Poll_Number(webapp2.RequestHandler):
     def post(self):
 		global feature
@@ -74,6 +78,7 @@ class Poll_Number(webapp2.RequestHandler):
 		template = jinja_environment.get_template('poll_number.html')
 		self.response.out.write(template.render(template_values))		
 		  
+# Save the Twilio Credentials from the Profile Page into the Database
 class Twilio_Save(webapp2.RequestHandler):
 	def post(self):
 		user_key = self.request.get('user_key_info')
@@ -84,6 +89,7 @@ class Twilio_Save(webapp2.RequestHandler):
 		twilio_info1.put()
 		self.redirect("/")
 		
+# Select from a list of prepurchased Existing Numbers from the database to conduct poll/Raffle
 class Choose_Number(webapp2.RequestHandler):
 	def post(self):
 		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
@@ -96,7 +102,8 @@ class Choose_Number(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('choose_number.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# Configure Twilio Number to send SMS to Google App Engine
 class Add_Sms_URL(webapp2.RequestHandler):
 	def post(self):
 		
@@ -114,7 +121,8 @@ class Add_Sms_URL(webapp2.RequestHandler):
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply_raffle")
 				raffle_number = number.phone_number
 				self.redirect("/Start_Raffle?number=" + "%s" %(number.phone_number))
-		
+
+# Purchase a new number to conduct poll/raffle		
 class Generate_Number(webapp2.RequestHandler):
 	def post(self):
 		global raffle_number
@@ -135,7 +143,8 @@ class Generate_Number(webapp2.RequestHandler):
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply_raffle")
 				raffle_number = number.phone_number
 				self.redirect("/Start_Raffle?number=" + "%s" %(numbers[0].phone_number))		
-		
+
+# Sends Automated text message on receipt of user sms		
 class Auto_Reply_Sms(webapp2.RequestHandler):
 	sender_number = 0
 	option_number = 0
@@ -169,6 +178,7 @@ class Auto_Reply_Sms(webapp2.RequestHandler):
 		del incoming_data_poll[0:len(incoming_data_poll)]
 		self.response.write(message1)
 		
+# Sends Automated text message on receipt of user sms	
 class Auto_Reply_Sms_Raffle(webapp2.RequestHandler):	
 	def post(self):
 		global incoming_raffle_numbers
@@ -187,7 +197,8 @@ class Auto_Reply_Sms_Raffle(webapp2.RequestHandler):
 		resp.sms(message)
 		message1= str(resp)
 		self.response.write(message1)	
-		
+
+# Initiate Twilio Poll - Evangelist Enters Poll Question and Options 		
 class Twilio_Poll(webapp2.RequestHandler):
 	def get(self):
 		global question
@@ -205,7 +216,7 @@ class Twilio_Poll(webapp2.RequestHandler):
 		template = jinja_environment.get_template('poll.html')
 		self.response.out.write(template.render(template_values))	
 		
-		
+# The Poll Data i.e. Question, Options and SMS Number is stored in the instance Variables
 class Option_Save(webapp2.RequestHandler):
 	def post(self):
 		global data_number
@@ -218,6 +229,7 @@ class Option_Save(webapp2.RequestHandler):
 			data_number = data_number + 1
 		self.redirect('/poll?question=' + question + '&number=' + number)
 
+# The Poll iS started. The question, options and SMS Number is displayed on UI
 class Start_Poll(webapp2.RequestHandler):	
 	def post(self):
 		poll =[]
@@ -237,7 +249,8 @@ class Start_Poll(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('start_poll.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# User Page for Poll - Will Display the Number to the user / and Also live poll results		
 class Start_Poll_User(webapp2.RequestHandler):	
 	def get(self,name):
 		global poll_number
@@ -254,6 +267,7 @@ class Start_Poll_User(webapp2.RequestHandler):
 		template = jinja_environment.get_template('start_poll_user.html')
 		self.response.out.write(template.render(template_values))
 
+# The Poll is Terminated and Results are Displayed 
 class Stop_Poll(webapp2.RequestHandler):		
 	def post(self):
 		data_poll = []
@@ -286,7 +300,8 @@ class Stop_Poll(webapp2.RequestHandler):
 		poll_number = 0
 		del data_poll[0:len(data_poll)]
 		self.redirect("/results/%d" % id)
-		
+
+# Generate Permalink for Poll Results		
 class Permalink(webapp2.RequestHandler):
     def get(self, poll_id):
 		key_list = []
@@ -304,7 +319,8 @@ class Permalink(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('results.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# Displays the Poll History with a List of Previously Conducted Polls. 		
 class Poll_History(webapp2.RequestHandler):	
 	def get(self):			
 		entity = Poll_Data.all()
@@ -316,13 +332,15 @@ class Poll_History(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('poll_history.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# Allows Evangelist to Delete old Polls		
 class Delete_Poll(webapp2.RequestHandler):	
 	def get(self, poll_id):		
 		poll = Poll_Data.get_by_id(int(poll_id))
 		poll.delete()
 		self.redirect("/poll_history")
 
+# Begin Raffle, It allows to Add NewEntry on the Fly
 class Start_Raffle(webapp2.RequestHandler):	
 	def get(self):
 		raffle_data = []
@@ -335,12 +353,14 @@ class Start_Raffle(webapp2.RequestHandler):
 			'phone_number': self.request.get('number'),
 			'channel_key': channel_key,
 			'url': users.create_logout_url("/"),
+			'user_nickname' : users.get_current_user().nickname(),
 		}
 		template = jinja_environment.get_template('start_raffle.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# Begin User Display page for Raffle to Display Raffle Participants and Results after the Raffle is Stopped		
 class Start_Raffle_User(webapp2.RequestHandler):	
-	def get(self):	
+	def get(self,name):	
 		global raffle_number
 		channel_key = channel.create_channel('Raffle_User')
  		template_values = {
@@ -350,7 +370,8 @@ class Start_Raffle_User(webapp2.RequestHandler):
 		}
 		template = jinja_environment.get_template('start_raffle_user.html')
 		self.response.out.write(template.render(template_values))
-		
+
+# Update the Page after the user is dynamically added/Removed
 class Update_User_Raffle_Page(webapp2.RequestHandler):	
 	def get(self):
 		global incoming_raffle_numbers
@@ -370,6 +391,7 @@ class Update_User_Raffle_Page(webapp2.RequestHandler):
 		channel.send_message('Raffle_User', "%s" % (json.dumps(incoming_data_user)))
 		del incoming_data_user[0:len(incoming_data_user)]
 		
+# Stop Raffle and Declare Result		
 class Stop_Raffle(webapp2.RequestHandler):	
 	def get(self):
 		global incoming_raffle_numbers
@@ -399,8 +421,8 @@ class Stop_Raffle(webapp2.RequestHandler):
 		raffle_number = 0			
 
 		
-
+# URL Mapping
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/choose_number', Choose_Number), ('/poll_number', Poll_Number), ('/poll', Twilio_Poll), ('/option_save', Option_Save), ('/Start_Poll', Start_Poll), ('/add_sms_url', Add_Sms_URL), ('/stop_poll', Stop_Poll), ('/results/(\d+)', Permalink), ('/poll_history', Poll_History), ('/auto_reply_raffle', Auto_Reply_Sms_Raffle), ('/Start_Raffle', Start_Raffle), ('/stop_raffle', Stop_Raffle), ('/delete_poll/(\d+)', Delete_Poll), ('/raffle', Start_Raffle_User), ('/update_user_page', Update_User_Raffle_Page), ('/polling/(\w+)', Start_Poll_User)
+    ('/', MainHandler), ('/profile', Profile), ('/save', Twilio_Save), ('/generate_number', Generate_Number), ('/auto_reply', Auto_Reply_Sms), ('/choose_number', Choose_Number), ('/poll_number', Poll_Number), ('/poll', Twilio_Poll), ('/option_save', Option_Save), ('/Start_Poll', Start_Poll), ('/add_sms_url', Add_Sms_URL), ('/stop_poll', Stop_Poll), ('/results/(\d+)', Permalink), ('/poll_history', Poll_History), ('/auto_reply_raffle', Auto_Reply_Sms_Raffle), ('/Start_Raffle', Start_Raffle), ('/stop_raffle', Stop_Raffle), ('/delete_poll/(\d+)', Delete_Poll), ('/raffle/(\w+)', Start_Raffle_User), ('/update_user_page', Update_User_Raffle_Page), ('/polling/(\w+)', Start_Poll_User)
 ], debug=True)
  
