@@ -40,21 +40,9 @@ i=1;
 	{
 		option_list.push('Option' + ' '+ i + ' ' + options[i]);
 		data_list.push(data[options[i]]);
-		
-		//div.innerHTML += 
-		//'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>";
 		i++;
 	}
-	//i=0;
-	//for(var key in options)
-	//{
-		
-		//div.innerHTML += option_list[i] + "<br>";
-		//div.innerHTML += data_list[i] + "<br>";
-		
-		//'Option' + i + ' ' + options[i] + ' ' + data[options[i]] + "<br>";
-		//i++;
-	//}
+
 
     chart = new Highcharts.Chart({
         chart: {
@@ -118,7 +106,10 @@ i=1;
                     dataLabels: {
                         enabled: false
                     }
-                }
+                },
+				 series: {
+                color: '#D3D3D3'
+            }
             },
         legend: {
             enabled: false
@@ -167,11 +158,7 @@ console.log('onError');
 }
 
 function onMessage(msg_obj) {
-	//console.log('onMessage');
-	//document.write ("Printing the channel message data"); // prints the value of the message variable-->
-	//document.write (msg_obj.data);-->
-	//var div_element = document.getElementById("output");
-	//div_element.innerHTML = "";
+
 	var poll_sms_info = eval(String(msg_obj.data));
 	if(poll_sms_info[1]== 'onSms'){
 	var option_number = Number(poll_sms_info[0]);
@@ -180,9 +167,6 @@ function onMessage(msg_obj) {
 	var poll_data_element = document.getElementById("poll_data");
 	poll_data_element.value = JSON.stringify(data_list);
 	}
-	//print_dict();
-	//poll_count = Number(document.getElementById('userInput1').innerHTML) + 1 ; 
-	//document.getElementById('userInput1').innerHTML = poll_count
 
 }
 function onError(obj) {
@@ -228,7 +212,7 @@ function onClose(obj) {
 		<input type="hidden" name="polldata" id="poll_data" value="">
 		<input type="hidden" name="poll_question" value="{{ question }}">
 		<input type="hidden" name="poll_number" value="{{phone_number}}">
-		<p><button name="Stop Poll" class="btn active" type="submit">Stop Poll</button></p> 
+		<p><button name="Stop Poll" class="btn btn-small" type="submit">Stop Poll</button></p> 
 		</Form>       		
 		</font>
 		<footer>
