@@ -23,6 +23,8 @@ feature = 1
 raffle_number = 0
 poll_number = 0
 question = ''
+poll_fiendly_number = ''
+raffle_friendly_number = ''
 poll_id = 0
 
 jinja_environment = jinja2.Environment(
@@ -106,19 +108,21 @@ class Choose_Number(webapp2.RequestHandler):
 # Configure Twilio Number to send SMS to Google App Engine
 class Add_Sms_URL(webapp2.RequestHandler):
 	def post(self):
-		
 		global raffle_number
 		global feature
+		global poll_fiendly_number
+		global raffle_friendly_number
 		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
 		client = TwilioRestClient(q.twilio_username, q.twilio_password)
 		numbers = client.phone_numbers.list(phone_number="%s" %(self.request.get('number')))		
 		if numbers:
 			if(feature == 1) :
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply")
+				poll_fiendly_number = number.friendly_name
 				self.redirect("/poll?number=" + "%s" %(number.phone_number))
 			if(feature == 2) :
-			
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply_raffle")
+				raffle_friendly_number = number.friendly_name
 				raffle_number = number.phone_number
 				self.redirect("/Start_Raffle?number=" + "%s" %(number.phone_number))
 
@@ -127,6 +131,8 @@ class Generate_Number(webapp2.RequestHandler):
 	def post(self):
 		global raffle_number
 		global feature
+		global poll_fiendly_number
+		global raffle_friendly_number
 		q = Twilio_Info.get_by_key_name("%s" % (users.get_current_user().nickname()))
 		client = TwilioRestClient(q.twilio_username, q.twilio_password)
 		numbers = client.phone_numbers.search(type="local")
@@ -138,9 +144,11 @@ class Generate_Number(webapp2.RequestHandler):
 		if numbers:
 			if(feature == 1) :
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply")
+				poll_fiendly_number = number.friendly_name
 				self.redirect("/poll?number=" + "%s" %(numbers[0].phone_number))
 			if(feature == 2) :
 				number = client.phone_numbers.update("%s" %(numbers[0].sid), sms_url="http://sp13-twilio.appspot.com/auto_reply_raffle")
+				raffle_friendly_number = number.friendly_name
 				raffle_number = number.phone_number
 				self.redirect("/Start_Raffle?number=" + "%s" %(numbers[0].phone_number))		
 
@@ -203,12 +211,14 @@ class Twilio_Poll(webapp2.RequestHandler):
 	def get(self):
 		global question
 		global poll_number
+		global poll_fiendly_number
 		question = str(self.request.get('question'))
 		poll_number = int(self.request.get('number'))
 		template_values = {
             'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
             'question': self.request.get('question'),
 			'data_store': json.dumps(data),
+			'friendly_number': poll_fiendly_number,
 			'number' : self.request.get('number'),
 			'user_nickname' : users.get_current_user().nickname(),
 			'url': users.create_logout_url("/"),
@@ -232,17 +242,19 @@ class Option_Save(webapp2.RequestHandler):
 # The Poll iS started. The question, options and SMS Number is displayed on UI
 class Start_Poll(webapp2.RequestHandler):	
 	def post(self):
+		global poll_fiendly_number
 		poll =[]
 		poll.append(1)	
 		poll.append("onStart")	
 		channel_key = channel.create_channel('Poll')
-		channel.send_message('Poll_User', "%s" % (json.dumps(poll)))
+		# channel.send_message('Poll_User', "%s" % (json.dumps(poll)))
  		template_values = {
 		    'key': urllib.urlencode({'user_key_info': users.get_current_user().nickname()}),
 	        'question': self.request.get('question'),
 			'data_store': json.dumps(data),
 			'option_data': json.dumps(option_data),
 			'phone_number': self.request.get('number'),
+			'friendly_number': poll_fiendly_number,
 			'client_id': users.get_current_user().nickname(),
 			'channel_key': channel_key,
 			'url': users.create_logout_url("/"),
@@ -255,12 +267,14 @@ class Start_Poll_User(webapp2.RequestHandler):
 	def get(self,name):
 		global poll_number
 		global question
+		global poll_fiendly_number
 		channel_key = channel.create_channel('Poll_User')
  		template_values = {
 	        'question': str(question),
 			'data_store': json.dumps(data),
 			'option_data': json.dumps(option_data),
 			'phone_number': poll_number,
+			'friendly_number': poll_fiendly_number,
 			'channel_key': channel_key,
 			'url': users.create_logout_url("/"),
 		}
@@ -343,6 +357,7 @@ class Delete_Poll(webapp2.RequestHandler):
 # Begin Raffle, It allows to Add NewEntry on the Fly
 class Start_Raffle(webapp2.RequestHandler):	
 	def get(self):
+		global raffle_friendly_number
 		raffle_data = []
 		raffle_data.append(1)
 		raffle_data.append(2)
@@ -352,6 +367,7 @@ class Start_Raffle(webapp2.RequestHandler):
  		template_values = {
 			'phone_number': self.request.get('number'),
 			'channel_key': channel_key,
+			'friendly_number' : raffle_friendly_number,
 			'url': users.create_logout_url("/"),
 			'user_nickname' : users.get_current_user().nickname(),
 		}
@@ -362,10 +378,12 @@ class Start_Raffle(webapp2.RequestHandler):
 class Start_Raffle_User(webapp2.RequestHandler):	
 	def get(self,name):	
 		global raffle_number
+		global raffle_friendly_number
 		channel_key = channel.create_channel('Raffle_User')
  		template_values = {
 			'phone_number': raffle_number,
 			'channel_key': channel_key,
+			'friendly_number' : raffle_friendly_number,
 			'url': users.create_logout_url("/"),
 		}
 		template = jinja_environment.get_template('start_raffle_user.html')
@@ -380,6 +398,7 @@ class Update_User_Raffle_Page(webapp2.RequestHandler):
 		for key in incoming_raffle_numbers.iterkeys() :
 			if(i == index):
 				incoming_raffle_numbers.pop(key, None)
+				break
 			i = i + 1	
 		incoming_data_user = []
 		
