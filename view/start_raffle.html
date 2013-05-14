@@ -98,15 +98,15 @@ function printRaffleEntries()
 	for(var name in names_list){
 		row=document.createElement('tr');
 			cell1=document.createElement('td');
-			cell1.setAttribute('style', 'font-size:32px;color: black;');
+			cell1.setAttribute('style', 'font-size:32px;color: white;');
 			cell1.appendChild(document.createTextNode(names_list[i]));
 			cell2=document.createElement('td');
-			button = document.createElement('button');
-			link = document.createElement('a');
+			link = document.createElement('button');
+			//link = document.createElement('a');
 			link1 = document.createElement('i');
 			link.setAttribute('class', 'span2');
 			link1.setAttribute('class', 'icon-remove');
-			link.setAttribute('href','#');
+			//link.setAttribute('href','#');
 			link.setAttribute('onclick', "javascript:deleteEntry('" + i + "')");
 			link.appendChild(link1);
 			cell2.appendChild(link);
@@ -187,33 +187,34 @@ req.send(null);
 					</ul>
 				</div>
 		</div></br>
-	<font size="6"color="black">Send your Name to this number-</font><br><br><br><label style="font-size:30px;color:black;" id="phoneNumber">"{{ phone_number }}"</label><br>
+	<font size="6"color="white">Send your Name to this number-</font><br><br><br><label style="font-size:30px;color:white;" id="phoneNumber">{{ friendly_number }}</label></br>
 	
-		<p><font size="4" color="black">RAFFLE PAGE</font></p>
+		<p><font size="4" color="white">RAFFLE PAGE</font></p>
 		
-		<font size="5" color="black">Raffle link for Users : <a href="http://sp13-twilio.appspot.com/raffle/{{user_nickname}}">http://sp13-twilio.appspot.com/raffle/{{user_nickname}}</a></font>
+		<font size="5" color="white">Raffle link for Users : <a href="http://sp13-twilio.appspot.com/raffle/{{user_nickname}}" style="color:white;">http://sp13-twilio.appspot.com/raffle/{{user_nickname}}</a></font>
 		</font>
+		</br></br>
+		<font size="5" color="white"><p style="color:white;">Elapsed Time :<div id="timer_container">0</div></p></font>
 		
-		<div id="timer"><p>Elapsed Time :<div id="timer_container">0</div></p></div>
-		
-		<font size="4" color="black">Add Entry:</font><input type="text" name="addEntry" id="add_entry" value=""></br>
-		<font size="4" color="black">Add phone number:</font><input type="text" name="addEntrynumber" id="add_entry_number" value="">
+		<font size="4" color="white">Add Entry:</font><input type="text" name="addEntry" id="add_entry" value=""></br>
+		<font size="4" color="white">Add phone number:</font><input type="text" name="addEntrynumber" id="add_entry_number" value="">
 		<p><button name="Add Entry" class="btn btn-small" onclick="addEntry();">Add Entry</button></p>    
 		
 		<div class="container">
-		 <font size="5"><div id="output" align="center">
+		 <font size="5" color="white"><div id="output" align="center">
 
 			
 		</div>
 		</font>	
-		<font size="6" color="white"><div id="winner" >
+		</br>
+		<font size="7" color="white"><div id="winner" >
 
 				
 		</div></font>
 		</div>
 		<p><button name="Stop Raffle" id="stopRaffle" class="btn btn-small" onclick="endRaffle();">Stop Raffle</button></p>
 		      		<footer>
-					        <p class="footer">
+					        <p class="footer" style="color:white;">
 								</br>
 								</br>
 					            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
