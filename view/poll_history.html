@@ -9,7 +9,7 @@
 			<link rel="shortcut icon" href="http://static1.twilio.com/packages/favicons/img/Twilio_57.png">
       <title>Poll History</title>
 </head>
-<body><font size="4" color="black">
+<body><font size="4">
 	<header>
 	        <div id="header">
 
@@ -27,18 +27,18 @@
 					</ul>
 				</div>
 		</div>
-      <legend><font size="4" color="black">Poll History</font></legend>	
-      <h4> <font size="4" color="black">Select a Poll Question</font> </h4>
+      <legend><font size="4" color="white">Poll History</font></legend>	
+      <h4> <font size="4" color="white">Select a Poll Question</font> </h4>
       
       <table class="table table-striped">  
         <thead>  
           <tr>  
-            <th><font size="4" color="black">Poll Questions</font></th>  
+            <th><font size="4" color="white">Poll Questions</font></th>  
             <th></th>  
           </tr>  
         </thead>  
         <tbody>  
-		 <font size="4" color="black">{% for poll in history_data %}</font>
+		 <font size="4" color="white">{% for poll in history_data %}</font>
           <tr>  
             <td><a href="/results/{{ poll.key().id() }}">"{{ poll.poll_question }}"</a></td>  
             <td><button><a href="/delete_poll/{{ poll.key().id() }}"><i class="icon-remove"></i></a></td>  
@@ -50,7 +50,7 @@
       </br>
       </font>
 		<footer>
-		        <p class="footer">
+		        <p class="footer" style="color:white;">
 					</br>
 					</br>
 		            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
