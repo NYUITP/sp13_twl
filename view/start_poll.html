@@ -57,7 +57,7 @@ i=1;
 
                             font: 'normal 28px Verdana, sans-serif',
 
-                            color : 'black'
+                            color : 'white'
 
                         }
         },
@@ -73,7 +73,7 @@ i=1;
 				style: {
 
                     font: 'normal 20px Verdana, sans-serif',
-					color : 'black'
+					color : 'white'
 
                         }
       }	
@@ -89,7 +89,7 @@ i=1;
 
                             font: 'normal 20px Verdana, sans-serif',
 
-                            color : 'black'
+                            color : 'true'
 
                         }
             },
@@ -179,7 +179,7 @@ function onClose(obj) {
 
     </head>
 	
-    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'><font size="4" color="black">
+    <body onload='timer=setInterval("countUP()", 1000 );channel_create();'><font size="4" color="white">
 	<header>
 	        <div id="header">
 
@@ -197,11 +197,11 @@ function onClose(obj) {
 					</ul>
 				</div>
 		</div>
-	<legend><font size="6">Twilio Poll Page</font></legend>
-	<font size="6">Sms the option number of your choice to this number:</br></br> 
-	<label id="phoneNumber"><font size="6">"{{ phone_number }}"</font></label></font></br>
+	<legend style="color:white;"><font size="6">Twilio Poll Page</font></legend>
+	<font size="6" style="color:white;">Sms the option number of your choice to this number:</br></br> 
+	<label id="phoneNumber" style="color:white;"><font size="6" >{{ friendly_number }}</font></label></font></br>
 	
-		<font size="5"><p>Elapsed Time :<div id="timer_container">0</div></p></font>
+		<font size="5"><p style="color:white;">Elapsed Time :<div id="timer_container">0</div></p></font>
 		
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -216,7 +216,7 @@ function onClose(obj) {
 		</Form>       		
 		</font>
 		<footer>
-		        <p class="footer">
+		        <p class="footer" style="color:white;">
 					</br>
 					</br>
 		            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
