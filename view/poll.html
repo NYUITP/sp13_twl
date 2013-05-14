@@ -42,24 +42,24 @@ function print_dict()
 					</ul>
 				</div>
 		</div>
-	<legend>Poll Page</legend>
+	<legend><font color="white">Poll Page</font></legend>
 	
 	
 		<h1>{{ name }}</h1>
-		<p>To Begin the poll Please Enter Question and Save Options One by One. Next Hit Start Poll</p>
-		Number used for polling : {{ number }}
+		<p><font color="white">To Begin the poll Please Enter Question and Save Options One by One. Next Hit Start Poll</font></p>
+		<font color="white">Number used for polling : {{ friendly_number }}</font>
 
 		<FORM ACTION="/option_save" METHOD=POST>
 		<BR>
-		 Your Question:<BR>
+		 <font color="white">Your Question:</font><BR>
 		<TEXTAREA NAME="question" COLS=40 ROWS=3>{{ question }}</TEXTAREA><BR><BR>			
-		 Your Options(Enter Options one by one and Press Save Option): <BR>			
+		 <font color="white">Your Options(Enter Options one by one and Press Save Option): </font><BR>			
 		<input type="text" name="options">
 	       	 <input type="hidden" name="number" value="{{ number }}">
 			 <input type="hidden" name="nickname" value="{{ user_nickname }}">
 		     <p><button class="btn btn-small" name="Options" type="submit" value="option">Add next Option</button></p>
 		</FORM>
-		<div id="output">
+		<div id="output" style="color:white;">
 				
 		</div>	
 		<Form Action="/Start_Poll" METHOD=POST>
@@ -67,13 +67,13 @@ function print_dict()
 	     	<input type="hidden" name="number" value="{{ number }}">
 			<p><button class="btn btn-small" name="Start Poll" type="submit">Start Poll</button></p> 
 		</Form>     
-		<font size="5">Poll link for Users : <a href="http://sp13-twilio.appspot.com/polling/{{user_nickname}}">http://sp13-twilio.appspot.com/polling/{{user_nickname}}</a></font>
+		<font size="5" color="white">Poll link for Users : <a href="http://sp13-twilio.appspot.com/polling/{{user_nickname}}" style="color:white;">http://sp13-twilio.appspot.com/polling/{{user_nickname}}</a></font>
 		</font>
 		<footer>
 		        <p class="footer">
 					</br>
 					</br>
-		            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
+		            <font color="white">Lovingly crafted by Suyash Chaudhary and Saurabh Ved</font>
 		        </p>
 		    </footer>
     </body>
