@@ -28,10 +28,10 @@
 					</ul>
 				</div>
 		</div>
-     <legend>Select Number</legend>	
+     <legend><font color="white">Select Number</font></legend>	
 		<form action="/add_sms_url" method="post">
 		  {% for number in  numbers  %}
-		  <input type="radio" name="number" value="{{ number.phone_number }}" /> <font size="4" color="black">{{ number.phone_number }}</font></br></br>
+		  <input type="radio" name="number" value="{{ number.phone_number }}" /> <font size="4" color="white">{{ number.phone_number }}</font></br></br>
 		  {% endfor %}
 		  </br>
 		  <button class="btn btn-small" name="submit" style="float: none; margin: 0 auto;" type="submit" value="Submit">Submit</button> 
@@ -40,7 +40,7 @@
 		        <p class="footer">
 					</br>
 					</br>
-		            Lovingly crafted by Suyash Chaudhary and Saurabh Ved
+		            <font color="white">Lovingly crafted by Suyash Chaudhary and Saurabh Ved</font>
 		        </p>
 		    </footer>
   </body>
