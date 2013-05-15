@@ -427,8 +427,7 @@ class Stop_Raffle(webapp2.RequestHandler):
 		raffle_winner_name = str(random.choice(names))
 		index = names.index(raffle_winner_name)
 		winner_number = numbers_raffle[index]
-		if((str(winner_number)).isdigit()):
-			message = client.sms.messages.create(body="Congratulations, you have won.", to='%s' % (winner_number), from_='%s%s' % ('+', raffle_number))
+		message = client.sms.messages.create(body="Congratulations, you have won.", to='%s' % (winner_number), from_='%s%s' % ('+', raffle_number))
 		incoming_data_user.append("%s" % (raffle_winner_name))
 		incoming_data_user.append("%s" % (winner_number))
 		incoming_data_user.append("onFinish")
