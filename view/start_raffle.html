@@ -73,7 +73,6 @@ function onMessage(msg_obj) {
 	div_element_winner.innerHTML = "The winner is - ";
 	div_element_winner.innerHTML += String(sms_info[0]);
 	document.getElementById('stopRaffle').style.visibility='hidden';
-	document.getElementById('timer').style.visibility='hidden';
 	socket.close();
 	}
 	if(sms_info[2]!= 'onFinish'){
@@ -102,11 +101,9 @@ function printRaffleEntries()
 			cell1.appendChild(document.createTextNode(names_list[i]));
 			cell2=document.createElement('td');
 			link = document.createElement('button');
-			//link = document.createElement('a');
 			link1 = document.createElement('i');
 			link.setAttribute('class', 'span2');
 			link1.setAttribute('class', 'icon-remove');
-			//link.setAttribute('href','#');
 			link.setAttribute('onclick', "javascript:deleteEntry('" + i + "')");
 			link.appendChild(link1);
 			cell2.appendChild(link);
